@@ -1,0 +1,162 @@
+swagger: '2.0'
+info:
+  version: 0.1.0
+  title: Status API
+  description: An API used to monitor status of various subscribed services
+host: 'localhost:8080'
+basePath: /status
+schemes:
+  - http
+paths:
+  '/services/{serviceID}':
+    get:
+      summary: Get the status of the selected service
+      description: ''
+      operationId: getOneService
+      parameters:
+        - in: path
+          name: serviceID
+          type: integer
+          required: true
+          description: Numeric ID of the service to get.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ServiceList'
+    patch:
+      summary: modify a subscribed service
+      description: ''
+      parameters:
+        - in: path
+          name: serviceID
+          type: integer
+          required: true
+          description: Numeric ID of the service to patch.
+      responses:
+        '200':
+          description: OK
+    delete:
+      summary: Remove a subscribed service from the pool
+      description: ''
+      parameters:
+        - in: path
+          name: serviceID
+          type: integer
+          required: true
+          description: Numeric ID of the service to delete.
+      responses:
+        '200':
+          description: OK
+  /services:
+    get:
+      summary: get the list of all subscribed services
+      description: get the list of all subscribed services
+      operationId: getServices
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ServiceList'
+    post:
+      summary: add a new service to the pool
+      description: add a service
+      operationId: addService
+      consumes:
+        - application/json
+      parameters:
+        - name: Service
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Service'
+      responses:
+        '201':
+          description: created
+          schema:
+            type: object
+  /downed:
+    get:
+      description: get the list of all subscribed services
+      operationId: getDown
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ServiceList'
+    post:
+      summary: Add a downed service to the list
+      description: ''
+      responses:
+        '200':
+          description: OK
+  '/downed/{serviceID}':
+    delete:
+      summary: remove a service from the downed services list
+      description: ''
+      parameters:
+        - in: path
+          name: serviceID
+          type: integer
+          required: true
+          description: Numeric ID of the downed service to delete.
+      responses:
+        '200':
+          description: OK
+  /maintenance:
+    get:
+      summary: Get the list of services undergoing maintenance
+      description: ''
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Add a service to the maintenance list
+      description: ''
+      responses:
+        '200':
+          description: OK
+  '/maintenance/{serviceID}':
+    delete:
+      summary: Delete a service from the maintenance list
+      description: ''
+      parameters:
+        - in: path
+          name: serviceID
+          type: integer
+          required: true
+          description: Numeric ID of the maintenance to delete.
+      responses:
+        '200':
+          description: OK
+definitions:
+  Service:
+    type: object
+    properties:
+      kind:
+        type: string
+      colour:
+        type: string
+      size:
+        type: string
+  ServiceList:
+    type: object
+    properties:
+      kind:
+        type: string
+      colour:
+        type: string
+      size:
+        type: string
