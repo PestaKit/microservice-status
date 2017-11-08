@@ -1,15 +1,59 @@
 swagger: '2.0'
 info:
-  version: 0.1.0
+  version: 0.2.0
   title: Status API
   description: An API used to monitor status of various subscribed services
 host: 'localhost:8080'
-basePath: /status
+basePath: /
+tags:
+  - name: services
+    description: Everything about services
+  - name: downed
+    description: Everything about downed services
+  - name: maintenance
+    description: Everything about services undegoing maintenance
 schemes:
   - http
 paths:
+  /services:
+    get:
+      tags:
+        - services
+      summary: get the list of all subscribed services
+      description: get the list of all subscribed services
+      operationId: getServices
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ServiceList'
+    post:
+      tags:
+        - services
+      summary: add a new service to the pool
+      description: add a service
+      operationId: addService
+      consumes:
+        - application/json
+      parameters:
+        - name: Service
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Service'
+      responses:
+        '201':
+          description: created
+          schema:
+            type: object
   '/services/{serviceID}':
     get:
+      tags:
+        - services
       summary: Get the status of the selected service
       description: ''
       operationId: getOneService
@@ -29,6 +73,8 @@ paths:
             items:
               $ref: '#/definitions/ServiceList'
     patch:
+      tags:
+        - services
       summary: modify a subscribed service
       description: ''
       parameters:
@@ -41,6 +87,8 @@ paths:
         '200':
           description: OK
     delete:
+      tags:
+        - services
       summary: Remove a subscribed service from the pool
       description: ''
       parameters:
@@ -52,39 +100,10 @@ paths:
       responses:
         '200':
           description: OK
-  /services:
-    get:
-      summary: get the list of all subscribed services
-      description: get the list of all subscribed services
-      operationId: getServices
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: success
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/ServiceList'
-    post:
-      summary: add a new service to the pool
-      description: add a service
-      operationId: addService
-      consumes:
-        - application/json
-      parameters:
-        - name: Service
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/Service'
-      responses:
-        '201':
-          description: created
-          schema:
-            type: object
   /downed:
     get:
+      tags:
+        - downed
       description: get the list of all subscribed services
       operationId: getDown
       produces:
@@ -97,6 +116,8 @@ paths:
             items:
               $ref: '#/definitions/ServiceList'
     post:
+      tags:
+        - downed
       summary: Add a downed service to the list
       description: ''
       responses:
@@ -104,6 +125,8 @@ paths:
           description: OK
   '/downed/{serviceID}':
     delete:
+      tags:
+        - downed
       summary: remove a service from the downed services list
       description: ''
       parameters:
@@ -117,12 +140,16 @@ paths:
           description: OK
   /maintenance:
     get:
+      tags:
+        - maintenance
       summary: Get the list of services undergoing maintenance
       description: ''
       responses:
         '200':
           description: OK
     post:
+      tags:
+        - maintenance
       summary: Add a service to the maintenance list
       description: ''
       responses:
@@ -130,6 +157,8 @@ paths:
           description: OK
   '/maintenance/{serviceID}':
     delete:
+      tags:
+        - maintenance
       summary: Delete a service from the maintenance list
       description: ''
       parameters:
