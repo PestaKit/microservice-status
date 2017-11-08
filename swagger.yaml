@@ -30,7 +30,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/ServiceList'
+              $ref: '#/definitions/Service'
     post:
       tags:
         - services
@@ -71,7 +71,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/ServiceList'
+              $ref: '#/definitions/Service'
     patch:
       tags:
         - services
@@ -114,7 +114,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/ServiceList'
+              $ref: '#/definitions/Service'
     post:
       tags:
         - downed
@@ -172,15 +172,6 @@ paths:
           description: OK
 definitions:
   Service:
-    type: object
-    properties:
-      kind:
-        type: string
-      colour:
-        type: string
-      size:
-        type: string
-  ServiceList:
     type: object
     properties:
       kind:
