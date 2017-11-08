@@ -143,6 +143,7 @@ paths:
     get:
       tags:
         - downed
+      summary: Get the list of downed services
       description: get the list of all subscribed services
       operationId: getDown
       produces:
