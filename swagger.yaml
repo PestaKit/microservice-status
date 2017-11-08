@@ -40,16 +40,40 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: Service
+        - name: Service(s)
           in: body
           required: true
           schema:
-            $ref: '#/definitions/Service'
+            type: array
+            items:
+              $ref: '#/definitions/Service'
       responses:
         '201':
           description: created
+        '400':
+          description: Bad request
+    put:
+      tags:
+        - services
+      summary: modify a subscribed service
+      description: ''
+      parameters:
+        - in: body
+          name: Service(s)
+          required: true
           schema:
-            type: object
+            type: array
+            items:
+              $ref: '#/definitions/Service'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid ID
+        '403':
+          description: Forbidden
+        '404':
+          description: Service not found
   '/services/{serviceID}':
     get:
       tags:
@@ -69,23 +93,34 @@ paths:
         '200':
           description: success
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Service'
+            $ref: '#/definitions/Service'
+        '400':
+          description: Invalid ID
+        '404':
+          description: Service not found
     patch:
       tags:
         - services
-      summary: modify a subscribed service
+      summary: Set the maintenance status for a service
       description: ''
       parameters:
         - in: path
           name: serviceID
-          type: integer
           required: true
           description: Numeric ID of the service to patch.
+          type: integer
+        - in: header
+          name: state
+          type: integer
+          required: true
+          description: The new state of the service
       responses:
         '200':
           description: OK
+        '400':
+          description: Invalid ID
+        '404':
+          description: Service not found
     delete:
       tags:
         - services
@@ -100,6 +135,10 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          description: Invalid ID
+        '404':
+          description: Service not found
   /downed:
     get:
       tags:
@@ -115,29 +154,6 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Service'
-    post:
-      tags:
-        - downed
-      summary: Add a downed service to the list
-      description: ''
-      responses:
-        '200':
-          description: OK
-  '/downed/{serviceID}':
-    delete:
-      tags:
-        - downed
-      summary: remove a service from the downed services list
-      description: ''
-      parameters:
-        - in: path
-          name: serviceID
-          type: integer
-          required: true
-          description: Numeric ID of the downed service to delete.
-      responses:
-        '200':
-          description: OK
   /maintenance:
     get:
       tags:
@@ -146,37 +162,24 @@ paths:
       description: ''
       responses:
         '200':
-          description: OK
-    post:
-      tags:
-        - maintenance
-      summary: Add a service to the maintenance list
-      description: ''
-      responses:
-        '200':
-          description: OK
-  '/maintenance/{serviceID}':
-    delete:
-      tags:
-        - maintenance
-      summary: Delete a service from the maintenance list
-      description: ''
-      parameters:
-        - in: path
-          name: serviceID
-          type: integer
-          required: true
-          description: Numeric ID of the maintenance to delete.
-      responses:
-        '200':
-          description: OK
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Service'
 definitions:
   Service:
     type: object
     properties:
-      kind:
+      id:
+        type: integer
+      name:
         type: string
-      colour:
+      statusAddress:
         type: string
-      size:
+      description:
+        type: string
+      state:
+        type: integer
+      contact:
         type: string
