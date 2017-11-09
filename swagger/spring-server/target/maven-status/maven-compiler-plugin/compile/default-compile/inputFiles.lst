@@ -1,0 +1,13 @@
+/home/newt/Dropbox/HEIG-VD/Cours/S5/AMT/labos/microservice-status/swagger/spring-server/src/main/java/io/pestakit/status/api/exceptions/NotFoundException.java
+/home/newt/Dropbox/HEIG-VD/Cours/S5/AMT/labos/microservice-status/swagger/spring-server/src/main/java/io/pestakit/status/Swagger2SpringBoot.java
+/home/newt/Dropbox/HEIG-VD/Cours/S5/AMT/labos/microservice-status/swagger/spring-server/target/generated-sources/swagger/src/main/java/io/pestakit/status/api/FruitsApi.java
+/home/newt/Dropbox/HEIG-VD/Cours/S5/AMT/labos/microservice-status/swagger/spring-server/src/main/java/io/pestakit/status/api/endpoints/FruitsApiController.java
+/home/newt/Dropbox/HEIG-VD/Cours/S5/AMT/labos/microservice-status/swagger/spring-server/src/main/java/io/pestakit/status/api/util/ApiResponseMessage.java
+/home/newt/Dropbox/HEIG-VD/Cours/S5/AMT/labos/microservice-status/swagger/spring-server/src/main/java/io/pestakit/status/api/exceptions/ApiException.java
+/home/newt/Dropbox/HEIG-VD/Cours/S5/AMT/labos/microservice-status/swagger/spring-server/src/main/java/io/pestakit/status/configuration/HomeController.java
+/home/newt/Dropbox/HEIG-VD/Cours/S5/AMT/labos/microservice-status/swagger/spring-server/src/main/java/io/pestakit/status/repositories/FruitRepository.java
+/home/newt/Dropbox/HEIG-VD/Cours/S5/AMT/labos/microservice-status/swagger/spring-server/src/main/java/io/pestakit/status/api/util/ApiOriginFilter.java
+/home/newt/Dropbox/HEIG-VD/Cours/S5/AMT/labos/microservice-status/swagger/spring-server/src/main/java/io/pestakit/status/entities/FruitEntity.java
+/home/newt/Dropbox/HEIG-VD/Cours/S5/AMT/labos/microservice-status/swagger/spring-server/target/generated-sources/swagger/src/main/java/io/pestakit/status/api/model/Fruit.java
+/home/newt/Dropbox/HEIG-VD/Cours/S5/AMT/labos/microservice-status/swagger/spring-server/src/main/java/io/pestakit/status/configuration/SwaggerDocumentationConfig.java
+/home/newt/Dropbox/HEIG-VD/Cours/S5/AMT/labos/microservice-status/swagger/spring-server/src/main/java/io/pestakit/status/RFC3339DateFormat.java

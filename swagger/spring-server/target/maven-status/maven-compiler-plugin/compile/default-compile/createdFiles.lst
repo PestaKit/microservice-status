@@ -1,0 +1,14 @@
+io/pestakit/status/api/FruitsApi.class
+io/pestakit/status/api/endpoints/FruitsApiController.class
+io/pestakit/status/api/util/ApiOriginFilter.class
+io/pestakit/status/RFC3339DateFormat.class
+io/pestakit/status/entities/FruitEntity.class
+io/pestakit/status/api/model/Fruit.class
+io/pestakit/status/configuration/HomeController.class
+io/pestakit/status/configuration/SwaggerDocumentationConfig.class
+io/pestakit/status/Swagger2SpringBoot$ExitException.class
+io/pestakit/status/api/util/ApiResponseMessage.class
+io/pestakit/status/Swagger2SpringBoot.class
+io/pestakit/status/api/exceptions/NotFoundException.class
+io/pestakit/status/repositories/FruitRepository.class
+io/pestakit/status/api/exceptions/ApiException.class

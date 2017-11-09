@@ -1,0 +1,22 @@
+-------------------------------------------------------------------------------
+Test set: io.avalia.fruits.api.spec.SpecificationTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.052 sec <<< FAILURE!
+Then I receive a 201 status code(Scenario: create a fruit)  Time elapsed: 0.002 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<201> but was:<0>
+	at org.junit.Assert.fail(Assert.java:88)
+	at org.junit.Assert.failNotEquals(Assert.java:834)
+	at org.junit.Assert.assertEquals(Assert.java:645)
+	at org.junit.Assert.assertEquals(Assert.java:631)
+	at io.avalia.fruits.api.spec.steps.CreationSteps.i_receive_a_status_code(CreationSteps.java:64)
+	at ✽.Then I receive a 201 status code(creation.feature:9)
+
+Scenario: create a fruit  Time elapsed: 0.002 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<201> but was:<0>
+	at org.junit.Assert.fail(Assert.java:88)
+	at org.junit.Assert.failNotEquals(Assert.java:834)
+	at org.junit.Assert.assertEquals(Assert.java:645)
+	at org.junit.Assert.assertEquals(Assert.java:631)
+	at io.avalia.fruits.api.spec.steps.CreationSteps.i_receive_a_status_code(CreationSteps.java:64)
+	at ✽.Then I receive a 201 status code(creation.feature:9)
+

@@ -49,10 +49,10 @@
                                 <useBeanValidation>true</useBeanValidation>
                                 <interfaceOnly>true</interfaceOnly>
                                 <delegatePattern>false</delegatePattern>
-                                <apiPackage>io.avalia.fruits.api</apiPackage>
-                                <configPackage>io.avalia.fruits.config</configPackage>
-                                <basePackage>io.avalia.fruits</basePackage>
-                                <modelPackage>io.avalia.fruits.api.model</modelPackage>
+                                <apiPackage>io.pestakit.status.api</apiPackage>
+                                <configPackage>io.pestakit.status.config</configPackage>
+                                <basePackage>io.pestakit.status</basePackage>
+                                <modelPackage>io.pestakit.status.api.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>
