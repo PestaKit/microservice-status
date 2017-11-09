@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: io.avalia.fruits.api.spec.SpecificationTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.676 sec
