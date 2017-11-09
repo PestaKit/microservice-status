@@ -8,10 +8,6 @@ basePath: /
 tags:
   - name: services
     description: Everything about services
-  - name: downed
-    description: Everything about downed services
-  - name: maintenance
-    description: Everything about services undegoing maintenance
 schemes:
   - http
 paths:
@@ -24,6 +20,12 @@ paths:
       operationId: getServices
       produces:
         - application/json
+      parameters:
+        - name: status
+          in: query
+          description: Status wanted, none specified mean all
+          required: false
+          type: string
       responses:
         '200':
           description: success
@@ -31,6 +33,8 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Service'
+        '400':
+          description: Bad request, status unknow
     post:
       tags:
         - services
@@ -139,38 +143,10 @@ paths:
           description: Invalid ID
         '404':
           description: Service not found
-  /downed:
-    get:
-      tags:
-        - downed
-      summary: Get the list of downed services
-      description: get the list of all subscribed services
-      operationId: getDown
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: success
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Service'
-  /maintenance:
-    get:
-      tags:
-        - maintenance
-      summary: Get the list of services undergoing maintenance
-      description: ''
-      responses:
-        '200':
-          description: success
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Service'
 definitions:
   Service:
     type: object
+    required: [name, statusAddress]
     properties:
       id:
         type: integer
@@ -181,6 +157,7 @@ definitions:
       description:
         type: string
       state:
-        type: integer
+        type: string
       contact:
         type: string
+
