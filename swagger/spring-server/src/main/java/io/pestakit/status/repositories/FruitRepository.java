@@ -1,6 +1,6 @@
-package io.avalia.fruits.repositories;
+package io.pestakit.status.repositories;
 
-import io.avalia.fruits.entities.FruitEntity;
+import io.pestakit.status.entities.FruitEntity;
 import org.springframework.data.repository.CrudRepository;
 
 /**

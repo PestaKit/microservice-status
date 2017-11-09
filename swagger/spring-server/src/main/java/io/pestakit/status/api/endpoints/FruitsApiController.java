@@ -1,9 +1,9 @@
-package io.avalia.fruits.api.endpoints;
+package io.pestakit.status.api.endpoints;
 
-import io.avalia.fruits.api.FruitsApi;
-import io.avalia.fruits.entities.FruitEntity;
-import io.avalia.fruits.api.model.Fruit;
-import io.avalia.fruits.repositories.FruitRepository;
+import io.pestakit.status.api.FruitsApi;
+import io.pestakit.status.entities.FruitEntity;
+import io.pestakit.status.api.model.Fruit;
+import io.pestakit.status.repositories.FruitRepository;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -43,8 +43,8 @@
               <library>okhttp-gson</library>
               <configOptions>
                 <sourceFolder>.</sourceFolder>
-                <modelPackage>io.avalia.fruits.api.dto</modelPackage>
-                <apiPackage>io.avalia.fruits.api</apiPackage>
+                <modelPackage>io.pestakit.status.api.dto</modelPackage>
+                <apiPackage>io.pestakit.status.api</apiPackage>
               </configOptions>
               <output>target/generated-sources/swagger</output>
             </configuration>
