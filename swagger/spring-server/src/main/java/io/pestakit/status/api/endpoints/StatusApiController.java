@@ -15,7 +15,7 @@ public class StatusApiController implements ServicesApi
    @Autowired
    StatusRepository statusRepository;
 
-   @Override
+   @Override //TODO
    public ResponseEntity<Void> addService(List<Service> serviceS)
    {
       return null;
@@ -27,7 +27,7 @@ public class StatusApiController implements ServicesApi
       return null;
    }
 
-   @Override
+   @Override // TODO
    public ResponseEntity<List<Service>> getServices(String status)
    {
       return null;
