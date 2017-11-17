@@ -2,7 +2,8 @@ package io.pestakit.status.api.endpoints;
 
 import io.pestakit.status.api.ServicesApi;
 import io.pestakit.status.api.model.Service;
-import io.pestakit.status.repositories.StatusRepository;
+import io.pestakit.status.entities.ServiceEntity;
+import io.pestakit.status.repositories.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,11 +14,12 @@ import java.util.List;
 public class StatusApiController implements ServicesApi
 {
    @Autowired
-   StatusRepository statusRepository;
+   ServiceRepository serviceRepository;
 
-   @Override //TODO
+   @Override // TODO
    public ResponseEntity<Void> addService(List<Service> serviceS)
    {
+      serviceRepository.save(new ServiceEntity());
       return null;
    }
 
@@ -30,6 +32,7 @@ public class StatusApiController implements ServicesApi
    @Override // TODO
    public ResponseEntity<List<Service>> getServices(String status)
    {
+      serviceRepository.findAll();
       return null;
    }
 
