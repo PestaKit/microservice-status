@@ -4,5 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/swagger-spring.iml" filepath="$PROJECT_DIR$/swagger-spring.iml" />
     </modules>
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/servicessSpecification.iml" filepath="$PROJECT_DIR$/services-specs.iml" />
+    </modules>
   </component>
 </project>
