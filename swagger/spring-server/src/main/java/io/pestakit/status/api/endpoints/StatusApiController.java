@@ -26,12 +26,15 @@ public class StatusApiController implements ServicesApi
    @Override // TODO
    public ResponseEntity<Void> addService(@ApiParam(value = "" ,required=true ) @RequestBody List<Service> serviceS)
    {
+      int numberOfServiceAdded = 0;
+
       // For every service we got
       for (Service s : serviceS)
       {
          // Check whether the service is valid. If so, include it to the serviceRepository
          if(checkService(s))
          {
+            numberOfServiceAdded += 1;
             ServiceEntity serviceEntity = toServiceEntity(s);
 
             // save the service
@@ -39,6 +42,9 @@ public class StatusApiController implements ServicesApi
          }
       }
 
+      System.out.println("Number of services added : " + numberOfServiceAdded);
+
+      // TODO error response code according to result to deal
       return new ResponseEntity<Void>(HttpStatus.OK);
    }
 
@@ -56,14 +62,37 @@ public class StatusApiController implements ServicesApi
    @Override // TODO
    public ResponseEntity<List<Service>> getServices( @ApiParam(value = "Status wanted, none specified mean all") @RequestParam(value = "status", required = false) String status)
    {
+      // The list of services to return to the user
       ArrayList<Service> liste = new ArrayList<>();
-      for(ServiceEntity s : serviceRepository.findAll())
-      {
-         Service service = toService(s);
 
-         System.out.println(service.toString());
-         liste.add(service);
+      System.out.println("Status : " + status);
+
+      // If we want a specific status
+      if(status != null)
+      {
+         for(ServiceEntity s : serviceRepository.findAll())
+         {
+            Service service = toService(s);
+
+            if(service.getState().equals(status))
+            {
+               System.out.println(service.toString());
+               liste.add(service);
+            }
+         }
       }
+      // Otherwise return everything
+      else
+      {
+         for(ServiceEntity s : serviceRepository.findAll())
+         {
+            Service service = toService(s);
+
+            System.out.println(service.toString());
+            liste.add(service);
+         }
+      }
+
       return new ResponseEntity<List<Service>>(liste, HttpStatus.OK);
    }
 
