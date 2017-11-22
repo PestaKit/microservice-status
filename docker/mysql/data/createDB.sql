@@ -10,5 +10,5 @@ CREATE TABLE service_entity (
 	state VARCHAR(64) NOT NULL,
 	description VARCHAR(128),
 	contact VARCHAR(64),
-	statusAddress VARCHAR(256)
+	status_address VARCHAR(256)
 );
