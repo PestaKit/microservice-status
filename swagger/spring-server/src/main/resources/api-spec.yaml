@@ -89,6 +89,11 @@ paths:
           type: integer
           required: true
           description: Numeric ID of the service to get.
+        - in: header
+          name: token
+          required: true
+          type: string
+          description: The user token
       produces:
         - application/json
       responses:
