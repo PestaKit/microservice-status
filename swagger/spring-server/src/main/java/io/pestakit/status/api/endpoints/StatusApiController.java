@@ -28,27 +28,23 @@ public class StatusApiController implements ServicesApi
 
    /**
     * Method used to add one/several service(s) when a post is made to the api
-    * @param serviceS a list of service(s) to add to the store
+    * @param service a service to add to the store
     * @return a response code
     */
    @Override
-   public ResponseEntity<Void> addService(@ApiParam(value = "" ,required=true ) @RequestBody List<ServicePost> serviceS)
+   public ResponseEntity<Void> addService(@ApiParam(value = "" ,required=true ) @RequestBody ServicePost service)
    {
-      // For every service we got in the body
-      for (ServicePost s : serviceS)
+      if(checkServicePost(service))
       {
-         // Check whether the service is valid. If so, include it to the serviceRepository
-         if(checkServicePost(s))
-         {
-            ServiceEntity serviceEntity = toServiceEntity(s);
+         ServiceEntity serviceEntity = toServiceEntity(service);
 
-            // save the service
-            serviceRepository.save(serviceEntity);
-         }
+         // save the service
+         serviceRepository.save(serviceEntity);
+
+         return new ResponseEntity<Void>(HttpStatus.OK);
       }
 
-      // TODO error response code according to result to deal
-      return new ResponseEntity<Void>(HttpStatus.OK);
+      return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
    }
 
    /**
@@ -57,7 +53,8 @@ public class StatusApiController implements ServicesApi
     * @return a response code and the payload
     */
    @Override
-   public ResponseEntity<ServiceGet> getOneService(@ApiParam(value = "Numeric ID of the service to get.",required=true ) @PathVariable("serviceID") Integer serviceID)
+   public ResponseEntity<ServiceGet> getOneService(@ApiParam(value = "Numeric ID of the service to get.",required=true ) @PathVariable("serviceID") Integer serviceID,
+                                                   @ApiParam(value = "The user token" ,required=true ) @RequestHeader(value="token", required=true) String token)
    {
       return null;
    }
@@ -67,13 +64,11 @@ public class StatusApiController implements ServicesApi
     * @param status filter by status, none specified mean all
     * @return a list of services and a response code
     */
-   @Override // TODO
+   @Override
    public ResponseEntity<List<ServiceGet>> getServices( @ApiParam(value = "Status wanted, none specified mean all") @RequestParam(value = "status", required = false) String status)
    {
       // The list of services to return to the user
       ArrayList<ServiceGet> liste = new ArrayList<>();
-
-      System.out.println("Status : " + status);
 
       // If we want a specific status
       if(status != null)
@@ -110,7 +105,7 @@ public class StatusApiController implements ServicesApi
     * @return
     */
    @Override
-   public ResponseEntity<Void> servicesPut(@ApiParam(value = "" ,required=true ) @RequestBody List<ServicePost> serviceS)
+   public ResponseEntity<Void> servicesPut(@ApiParam(value = "" ,required=true ) @RequestBody Object serviceS)
    {
       return null;
    }

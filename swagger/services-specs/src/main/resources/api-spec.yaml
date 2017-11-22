@@ -23,7 +23,7 @@ paths:
       parameters:
         - name: status
           in: query
-          description: Status wanted, none specified mean all
+          description: 'Status wanted, none specified mean all'
           required: false
           type: string
       responses:
@@ -32,9 +32,9 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Service'
+              $ref: '#/definitions/ServiceGet'
         '400':
-          description: Bad request, status unknow
+          description: 'Bad request, status unknow'
     post:
       tags:
         - services
@@ -50,7 +50,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Service'
+              $ref: '#/definitions/ServicePost'
       responses:
         '201':
           description: created
@@ -68,7 +68,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Service'
+              $ref: '#/definitions/ServicePost'
       responses:
         '200':
           description: OK
@@ -97,7 +97,7 @@ paths:
         '200':
           description: success
           schema:
-            $ref: '#/definitions/Service'
+            $ref: '#/definitions/ServiceGet'
         '400':
           description: Invalid ID
         '404':
@@ -144,12 +144,12 @@ paths:
         '404':
           description: Service not found
 definitions:
-  Service:
+  ServicePost:
     type: object
-    required: [name, statusAddress]
+    required:
+      - name
+      - statusAddress
     properties:
-      id:
-        type: integer
       name:
         type: string
       statusAddress:
@@ -161,3 +161,19 @@ definitions:
       contact:
         type: string
 
+  ServiceGet:
+    type: object
+
+    properties:
+      self:
+        type: string
+      name:
+        type: string
+      statusAddress:
+        type: string
+      description:
+        type: string
+      state:
+        type: string
+      contact:
+        type: string
