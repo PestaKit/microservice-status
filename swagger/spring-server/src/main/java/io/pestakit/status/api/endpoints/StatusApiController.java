@@ -1,7 +1,8 @@
 package io.pestakit.status.api.endpoints;
 
 import io.pestakit.status.api.ServicesApi;
-import io.pestakit.status.api.model.Service;
+import io.pestakit.status.api.model.ServiceGet;
+import io.pestakit.status.api.model.ServicePost;
 import io.pestakit.status.entities.ServiceEntity;
 import io.pestakit.status.repositories.ServiceRepository;
 import io.swagger.annotations.ApiParam;
@@ -23,18 +24,22 @@ public class StatusApiController implements ServicesApi
    @Autowired
    ServiceRepository serviceRepository;
 
-   @Override // TODO
-   public ResponseEntity<Void> addService(@ApiParam(value = "" ,required=true ) @RequestBody List<Service> serviceS)
-   {
-      int numberOfServiceAdded = 0;
+   private final String BASE_URL = "http://localhost:8080/services/";
 
-      // For every service we got
-      for (Service s : serviceS)
+   /**
+    * Method used to add one/several service(s) when a post is made to the api
+    * @param serviceS a list of service(s) to add to the store
+    * @return a response code
+    */
+   @Override
+   public ResponseEntity<Void> addService(@ApiParam(value = "" ,required=true ) @RequestBody List<ServicePost> serviceS)
+   {
+      // For every service we got in the body
+      for (ServicePost s : serviceS)
       {
          // Check whether the service is valid. If so, include it to the serviceRepository
-         if(checkService(s))
+         if(checkServicePost(s))
          {
-            numberOfServiceAdded += 1;
             ServiceEntity serviceEntity = toServiceEntity(s);
 
             // save the service
@@ -42,28 +47,31 @@ public class StatusApiController implements ServicesApi
          }
       }
 
-      System.out.println("Number of services added : " + numberOfServiceAdded);
-
       // TODO error response code according to result to deal
       return new ResponseEntity<Void>(HttpStatus.OK);
    }
 
+   /**
+    * Method used when a get is made with a specific id to get the related service
+    * @param serviceID the service id of the required service
+    * @return a response code and the payload
+    */
    @Override
-   public ResponseEntity<Service> getOneService(@ApiParam(value = "Numeric ID of the service to get.",required=true ) @PathVariable("serviceID") Integer serviceID)
+   public ResponseEntity<ServiceGet> getOneService(@ApiParam(value = "Numeric ID of the service to get.",required=true ) @PathVariable("serviceID") Integer serviceID)
    {
       return null;
    }
 
    /**
-    * Get a list of all services available
-    * @param status status wanted, none specified mean all
-    * @return a list of services
+    * Get a list of all services available in the store
+    * @param status filter by status, none specified mean all
+    * @return a list of services and a response code
     */
    @Override // TODO
-   public ResponseEntity<List<Service>> getServices( @ApiParam(value = "Status wanted, none specified mean all") @RequestParam(value = "status", required = false) String status)
+   public ResponseEntity<List<ServiceGet>> getServices( @ApiParam(value = "Status wanted, none specified mean all") @RequestParam(value = "status", required = false) String status)
    {
       // The list of services to return to the user
-      ArrayList<Service> liste = new ArrayList<>();
+      ArrayList<ServiceGet> liste = new ArrayList<>();
 
       System.out.println("Status : " + status);
 
@@ -72,7 +80,7 @@ public class StatusApiController implements ServicesApi
       {
          for(ServiceEntity s : serviceRepository.findAll())
          {
-            Service service = toService(s);
+            ServiceGet service = toService(s);
 
             if(service.getState().equals(status))
             {
@@ -86,28 +94,44 @@ public class StatusApiController implements ServicesApi
       {
          for(ServiceEntity s : serviceRepository.findAll())
          {
-            Service service = toService(s);
+            ServiceGet service = toService(s);
 
             System.out.println(service.toString());
             liste.add(service);
          }
       }
 
-      return new ResponseEntity<List<Service>>(liste, HttpStatus.OK);
+      return new ResponseEntity<List<ServiceGet>>(liste, HttpStatus.OK);
    }
 
+   /**
+    * Fix a service with a put request
+    * @param serviceS
+    * @return
+    */
    @Override
-   public ResponseEntity<Void> servicesPut(@ApiParam(value = "" ,required=true ) @RequestBody List<Service> serviceS)
+   public ResponseEntity<Void> servicesPut(@ApiParam(value = "" ,required=true ) @RequestBody List<ServicePost> serviceS)
    {
       return null;
    }
 
+   /**
+    *
+    * @param serviceID
+    * @return
+    */
    @Override
    public ResponseEntity<Void> servicesServiceIDDelete(@ApiParam(value = "Numeric ID of the service to delete.",required=true ) @PathVariable("serviceID") Integer serviceID)
    {
       return null;
    }
 
+   /**
+    *
+    * @param serviceID
+    * @param state
+    * @return
+    */
    @Override
    public ResponseEntity<Void> servicesServiceIDPatch(@ApiParam(value = "Numeric ID of the service to patch.",required=true ) @PathVariable("serviceID") Integer serviceID,
                                                       @ApiParam(value = "The new state of the service" ,required=true ) @RequestHeader(value="state", required=true) Integer state)
@@ -115,17 +139,17 @@ public class StatusApiController implements ServicesApi
       return null;
    }
 
+
    /**
     * Private method used to go from a Service to a ServiceEntity
     *
     * @param service the received service
     * @return the new ServiceEntity
     */
-   private ServiceEntity toServiceEntity(Service service)
+   private ServiceEntity toServiceEntity(ServicePost service)
    {
       ServiceEntity entity = new ServiceEntity();
 
-      entity.setId(service.getId());
       entity.setStatusAddress(service.getStatusAddress());
       entity.setState(service.getState());
       entity.setName(service.getName());
@@ -140,12 +164,12 @@ public class StatusApiController implements ServicesApi
     * @param serviceEntity the received serviceEntity
     * @return the new Service
     */
-   private Service toService(ServiceEntity serviceEntity) {
-      Service service = new Service();
+   private ServiceGet toService(ServiceEntity serviceEntity) {
+      ServiceGet service = new ServiceGet();
 
       service.setContact(serviceEntity.getContact());
       service.setDescription(serviceEntity.getDescription());
-      service.setId(serviceEntity.getId());
+      service.setSelf(BASE_URL + serviceEntity.getId());
       service.setName(serviceEntity.getName());
       service.setState(serviceEntity.getState());
       service.setStatusAddress(serviceEntity.getStatusAddress());
@@ -158,13 +182,9 @@ public class StatusApiController implements ServicesApi
     * @param service the service to check
     * @return the result of the check. True = success, False = Fail.
     */
-   private boolean checkService(Service service)
+   private boolean checkServicePost(ServicePost service)
    {
-      return service.getContact() != null &&
-         service.getDescription() != null &&
-         service.getName() != null &&
-         service.getState() != null &&
-         service.getStatusAddress() != null &&
-         service.getId() != null;
+      return service.getName() != null &&
+         service.getStatusAddress() != null;
    }
 }
