@@ -53,7 +53,8 @@ public class StatusApiController implements ServicesApi
     * @return a response code and the payload
     */
    @Override
-   public ResponseEntity<ServiceGet> getOneService(@ApiParam(value = "Numeric ID of the service to get.",required=true ) @PathVariable("serviceID") Integer serviceID)
+   public ResponseEntity<ServiceGet> getOneService(@ApiParam(value = "Numeric ID of the service to get.",required=true ) @PathVariable("serviceID") Integer serviceID,
+                                                   @ApiParam(value = "The user token" ,required=true ) @RequestHeader(value="token", required=true) String token)
    {
       return null;
    }
@@ -68,8 +69,6 @@ public class StatusApiController implements ServicesApi
    {
       // The list of services to return to the user
       ArrayList<ServiceGet> liste = new ArrayList<>();
-
-      System.out.println("Status : " + status);
 
       // If we want a specific status
       if(status != null)
