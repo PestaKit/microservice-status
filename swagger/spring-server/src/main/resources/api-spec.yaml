@@ -44,13 +44,11 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: Service(s)
+        - name: Service
           in: body
           required: true
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/ServicePost'
+            $ref: '#/definitions/ServicePost'
       responses:
         '201':
           description: created
@@ -66,7 +64,7 @@ paths:
           name: Service(s)
           required: true
           schema:
-            type: array
+            type: object
             items:
               $ref: '#/definitions/ServicePost'
       responses:
