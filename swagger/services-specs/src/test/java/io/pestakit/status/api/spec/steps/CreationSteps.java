@@ -5,7 +5,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.pestakit.status.ApiException;
 import io.pestakit.status.ApiResponse;
-import io.pestakit.status.api.dto.Service;
 import io.pestakit.status.api.spec.helpers.Environment;
 
 import static org.junit.Assert.assertNotNull;
