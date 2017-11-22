@@ -1,4 +1,0 @@
-{"_id":{"$oid":"5a0a1bd56e7636de239aaceb"},"id":1.0,"name":"Google","statusAddress":"www.google.com/status","state":0.0}
-{"_id":{"$oid":"5a0a1bf66e7636de239aacec"},"id":2.0,"name":"Github","statusAddress":"www.github.com/status","state":0.0}
-{"_id":{"$oid":"5a0a1c366e7636de239aaced"},"id":3.0,"name":"Gaps","statusAddress":"www.gaps.heig-vd.ch","state":1.0}
-{"_id":{"$oid":"5a0a1c366e7636de239aacee"},"id":4.0,"name":"Bing","statusAddress":"www.bing.com","state":1.0}
