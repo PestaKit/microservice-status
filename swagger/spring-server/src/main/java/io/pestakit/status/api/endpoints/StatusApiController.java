@@ -73,15 +73,10 @@ public class StatusApiController implements ServicesApi
       // If we want a specific status
       if(status != null)
       {
-         for(ServiceEntity s : serviceRepository.findAll())
+         for(ServiceEntity s : serviceRepository.findByState(status))
          {
             ServiceGet service = toService(s);
-
-            if(service.getState().equals(status))
-            {
-               System.out.println(service.toString());
-               liste.add(service);
-            }
+            liste.add(service);
          }
       }
       // Otherwise return everything
