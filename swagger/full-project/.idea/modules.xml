@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../services-specs/servicesSpecification.iml" filepath="$PROJECT_DIR$/../services-specs/servicesSpecification.iml" />
       <module fileurl="file://$PROJECT_DIR$/../spring-server/swagger-spring.iml" filepath="$PROJECT_DIR$/../spring-server/swagger-spring.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../services-specs/src/test/test.iml" filepath="$PROJECT_DIR$/../services-specs/src/test/test.iml" />
     </modules>
   </component>
 </project>
