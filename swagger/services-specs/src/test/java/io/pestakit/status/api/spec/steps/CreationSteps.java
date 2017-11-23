@@ -15,6 +15,9 @@ import java.util.List;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Matthieu Chatelant, Lara Chauffoureaux, Alain Hardy
+ */
 public class CreationSteps
 {
    private Environment environment;
