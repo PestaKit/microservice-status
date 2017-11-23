@@ -1,0 +1,3 @@
+DROP DATABASE IF EXISTS status;
+
+CREATE DATABASE status;
