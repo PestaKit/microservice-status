@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class StatusApiController implements ServicesApi
     * @return a response code
     */
    @Override
-   public ResponseEntity<Void> addService(@ApiParam(value = "" ,required=true ) @RequestBody ServicePost service)
+   public ResponseEntity<Void> addService(@ApiParam(value = "" ,required=true ) @Valid @RequestBody ServicePost service)
    {
       if(checkServicePost(service))
       {
