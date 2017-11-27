@@ -1,6 +1,7 @@
 package io.pestakit.status.api.endpoints;
 
 import io.pestakit.status.api.ServicesApi;
+import io.pestakit.status.api.exceptions.ApiException;
 import io.pestakit.status.api.model.ServiceGet;
 import io.pestakit.status.api.model.ServicePost;
 import io.pestakit.status.entities.ServiceEntity;
@@ -10,14 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class StatusApiController implements ServicesApi
@@ -37,14 +43,17 @@ public class StatusApiController implements ServicesApi
    {
       if(checkServicePost(service))
       {
+         // Convert the service to a serviceEntity
          ServiceEntity serviceEntity = toServiceEntity(service);
 
-         // save the service
+         // Save the service into the DB
          serviceRepository.save(serviceEntity);
 
+         // Return a OK code
          return new ResponseEntity<Void>(HttpStatus.OK);
       }
 
+      // Something went wrong, return a 400 Bad Request
       return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
    }
 
@@ -70,28 +79,25 @@ public class StatusApiController implements ServicesApi
    {
       // The list of services to return to the user
       ArrayList<ServiceGet> liste = new ArrayList<>();
+      Iterable<ServiceEntity> searchResult = null;
 
       // If we want a specific status
       if(status != null)
-      {
-         for(ServiceEntity s : serviceRepository.findByState(status))
-         {
-            ServiceGet service = toService(s);
-            liste.add(service);
-         }
-      }
+         searchResult = serviceRepository.findByState(status);
+
       // Otherwise return everything
       else
-      {
-         for(ServiceEntity s : serviceRepository.findAll())
-         {
-            ServiceGet service = toService(s);
+         searchResult = serviceRepository.findAll();
 
-            System.out.println(service.toString());
-            liste.add(service);
-         }
+      // Prepare the response content
+      for(ServiceEntity s : searchResult)
+      {
+         // Convert the serviceEntity to a serviceGet
+         ServiceGet service = toService(s);
+         liste.add(service);
       }
 
+      // Return everything to the client
       return new ResponseEntity<List<ServiceGet>>(liste, HttpStatus.OK);
    }
 
@@ -130,6 +136,37 @@ public class StatusApiController implements ServicesApi
       return null;
    }
 
+   ////////////////////////////////////////////////////////////////////////////////////////////
+   ////////////////////// EXCEPTION HANDLING //////////////////////////////////////////////////
+   ////////////////////////////////////////////////////////////////////////////////////////////
+   @ExceptionHandler(Exception.class)
+   @ResponseBody
+   public Map<String,String> errorResponse(Exception ex, HttpServletResponse response)
+   {
+      // Map containing error messages
+      Map<String,String> errorMap = new HashMap<>();
+
+      // Insert the error message into the map
+      errorMap.put("errorMessage",ex.getMessage());
+
+      StringWriter sw = new StringWriter();
+      PrintWriter pw = new PrintWriter(sw);
+      ex.printStackTrace(pw);
+      String stackTrace = sw.toString();
+
+      // Insert the prepared stack trace message into the map
+      errorMap.put("errorStackTrace", stackTrace);
+
+      // Set the response status to the desired error code
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+
+      // Return the prepared error map
+      return errorMap;
+   }
+
+   ////////////////////////////////////////////////////////////////////////////////////////////
+   //////////////////////PRIVATE METHODS //////////////////////////////////////////////////////
+   ////////////////////////////////////////////////////////////////////////////////////////////
 
    /**
     * Private method used to go from a Service to a ServiceEntity
