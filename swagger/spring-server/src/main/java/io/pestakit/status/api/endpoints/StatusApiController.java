@@ -1,10 +1,9 @@
 package io.pestakit.status.api.endpoints;
 
 import io.pestakit.status.api.ServicesApi;
-import io.pestakit.status.api.exceptions.ApiException;
 import io.pestakit.status.api.model.ServiceGet;
 import io.pestakit.status.api.model.ServicePost;
-import io.pestakit.status.entities.ServiceEntity;
+import io.pestakit.status.jpa.ServiceJPA;
 import io.pestakit.status.repositories.ServiceRepository;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,11 +39,11 @@ public class StatusApiController implements ServicesApi
    {
       if(checkServicePost(service))
       {
-         // Convert the service to a serviceEntity
-         ServiceEntity serviceEntity = toServiceEntity(service);
+         // Convert the service to a serviceJPA
+         ServiceJPA serviceJPA = toServiceEntity(service);
 
          // Save the service into the DB
-         serviceRepository.save(serviceEntity);
+         serviceRepository.save(serviceJPA);
 
          // Return a OK code
          return new ResponseEntity<Void>(HttpStatus.OK);
@@ -79,7 +75,7 @@ public class StatusApiController implements ServicesApi
    {
       // The list of services to return to the user
       ArrayList<ServiceGet> liste = new ArrayList<>();
-      Iterable<ServiceEntity> searchResult = null;
+      Iterable<ServiceJPA> searchResult = null;
 
       // If we want a specific status
       if(status != null)
@@ -90,7 +86,7 @@ public class StatusApiController implements ServicesApi
          searchResult = serviceRepository.findAll();
 
       // Prepare the response content
-      for(ServiceEntity s : searchResult)
+      for(ServiceJPA s : searchResult)
       {
          // Convert the serviceEntity to a serviceGet
          ServiceGet service = toService(s);
@@ -169,14 +165,14 @@ public class StatusApiController implements ServicesApi
    ////////////////////////////////////////////////////////////////////////////////////////////
 
    /**
-    * Private method used to go from a Service to a ServiceEntity
+    * Private method used to go from a Service to a ServiceJPA
     *
     * @param service the received service
-    * @return the new ServiceEntity
+    * @return the new ServiceJPA
     */
-   private ServiceEntity toServiceEntity(ServicePost service)
+   private ServiceJPA toServiceEntity(ServicePost service)
    {
-      ServiceEntity entity = new ServiceEntity();
+      ServiceJPA entity = new ServiceJPA();
 
       entity.setStatusAddress(service.getStatusAddress());
       entity.setState(service.getState());
@@ -188,19 +184,19 @@ public class StatusApiController implements ServicesApi
    }
 
    /**
-    * Private method used to go from a serviceEntity to a Service
-    * @param serviceEntity the received serviceEntity
+    * Private method used to go from a serviceJPA to a Service
+    * @param serviceJPA the received serviceJPA
     * @return the new Service
     */
-   private ServiceGet toService(ServiceEntity serviceEntity) {
+   private ServiceGet toService(ServiceJPA serviceJPA) {
       ServiceGet service = new ServiceGet();
 
-      service.setContact(serviceEntity.getContact());
-      service.setDescription(serviceEntity.getDescription());
-      service.setSelf(BASE_URL + serviceEntity.getId());
-      service.setName(serviceEntity.getName());
-      service.setState(serviceEntity.getState());
-      service.setStatusAddress(serviceEntity.getStatusAddress());
+      service.setContact(serviceJPA.getContact());
+      service.setDescription(serviceJPA.getDescription());
+      service.setSelf(BASE_URL + serviceJPA.getId());
+      service.setName(serviceJPA.getName());
+      service.setState(serviceJPA.getState());
+      service.setStatusAddress(serviceJPA.getStatusAddress());
 
       return service;
    }
