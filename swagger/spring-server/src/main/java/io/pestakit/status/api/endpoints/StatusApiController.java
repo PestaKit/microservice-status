@@ -81,9 +81,9 @@ public class StatusApiController implements ServicesApi
       if(status != null)
       {
          status = status.toLowerCase();
-         searchResult = serviceRepository.findByState(ServiceJPA.State.fromValue(status));
+         searchResult = serviceRepository.findByState(ServiceEntity.State.fromValue(status));
       }
-s
+
       // Otherwise return everything
       else
          searchResult = serviceRepository.findAll();
@@ -178,7 +178,7 @@ s
       ServiceEntity entity = new ServiceEntity();
 
       entity.setStatusAddress(service.getStatusAddress());
-      entity.setState(ServiceJPA.State.values()[service.getState().ordinal()]);
+      entity.setState(ServiceEntity.State.values()[service.getState().ordinal()]);
       entity.setName(service.getName());
       entity.setDescription(service.getDescription());
       entity.setContact(service.getContact());
@@ -198,7 +198,7 @@ s
       service.setDescription(serviceEntity.getDescription());
       service.setSelf(BASE_URL + serviceEntity.getId());
       service.setName(serviceEntity.getName());
-      service.setState(ServiceGet.StateEnum.values()[serviceEntity.getState().ordinal());
+      service.setState(ServiceGet.StateEnum.values()[serviceEntity.getState().ordinal()]);
       service.setStatusAddress(serviceEntity.getStatusAddress());
 
       return service;
