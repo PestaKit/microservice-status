@@ -1,5 +1,7 @@
 package io.pestakit.status.jpa;
 
+import io.pestakit.status.api.model.ServiceGet;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +11,33 @@ import java.io.Serializable;
 @Entity
 public class ServiceJPA implements Serializable
 {
+   public enum State {
+
+      UP("up"),
+      DOWN("down"),
+      MAINTENANCE("maintenance");
+
+      private String value;
+
+      State(String value) {
+         this.value = value;
+      }
+
+      @Override
+      public String toString() {
+         return String.valueOf(value);
+      }
+
+      public static State fromValue(String text) {
+         for (State b : State.values()) {
+            if (String.valueOf(b.value).equals(text)) {
+               return b;
+            }
+         }
+         return null;
+      }
+   }
+
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Integer id;
@@ -16,7 +45,7 @@ public class ServiceJPA implements Serializable
    private String name;
    private String statusAddress;
    private String description;
-   private String state;
+   private State state;
    private String contact;
 
    public Integer getId()
@@ -54,12 +83,12 @@ public class ServiceJPA implements Serializable
       this.description = description;
    }
 
-   public String getState()
+   public State getState()
    {
       return state;
    }
 
-   public void setState(String state)
+   public void setState(State state)
    {
       this.state = state;
    }

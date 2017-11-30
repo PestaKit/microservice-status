@@ -11,5 +11,6 @@ import java.util.List;
 public interface ServiceRepository extends CrudRepository<ServiceJPA, Long>{
 
    public List<ServiceJPA> findByState(String state);
+   public List<ServiceJPA> findByState(ServiceJPA.State state);
 
 }

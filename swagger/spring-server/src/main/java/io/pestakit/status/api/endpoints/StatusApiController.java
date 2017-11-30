@@ -71,7 +71,7 @@ public class StatusApiController implements ServicesApi
     * @return a list of services and a response code
     */
    @Override
-   public ResponseEntity<List<ServiceGet>> getServices( @ApiParam(value = "Status wanted, none specified mean all") @RequestParam(value = "status", required = false) String status)
+   public ResponseEntity<List<ServiceGet>> getServices( @ApiParam(value = "Status wanted, none specified mean all", allowableValues = "UP, DOWN, MAINTENANCE") @RequestParam(value = "status", required = false) String status)
    {
       // The list of services to return to the user
       ArrayList<ServiceGet> liste = new ArrayList<>();
@@ -79,8 +79,11 @@ public class StatusApiController implements ServicesApi
 
       // If we want a specific status
       if(status != null)
-         searchResult = serviceRepository.findByState(status);
-
+      {
+         status = status.toLowerCase();
+         searchResult = serviceRepository.findByState(ServiceJPA.State.fromValue(status));
+      }
+s
       // Otherwise return everything
       else
          searchResult = serviceRepository.findAll();
@@ -175,7 +178,7 @@ public class StatusApiController implements ServicesApi
       ServiceJPA entity = new ServiceJPA();
 
       entity.setStatusAddress(service.getStatusAddress());
-      entity.setState(service.getState());
+      entity.setState(ServiceJPA.State.values()[service.getState().ordinal()]);
       entity.setName(service.getName());
       entity.setDescription(service.getDescription());
       entity.setContact(service.getContact());
@@ -195,7 +198,7 @@ public class StatusApiController implements ServicesApi
       service.setDescription(serviceJPA.getDescription());
       service.setSelf(BASE_URL + serviceJPA.getId());
       service.setName(serviceJPA.getName());
-      service.setState(serviceJPA.getState());
+      service.setState(ServiceGet.StateEnum.values()[serviceJPA.getState().ordinal()]);
       service.setStatusAddress(serviceJPA.getStatusAddress());
 
       return service;

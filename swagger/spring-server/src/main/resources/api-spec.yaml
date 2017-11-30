@@ -26,6 +26,7 @@ paths:
           description: 'Status wanted, none specified mean all'
           required: false
           type: string
+          enum: ["up", "down", "maintenance"]
       responses:
         '200':
           description: success
@@ -161,6 +162,7 @@ definitions:
         type: string
       state:
         type: string
+        enum: ["up", "down", "maintenance"]
       contact:
         type: string
 
@@ -178,5 +180,6 @@ definitions:
         type: string
       state:
         type: string
+        enum: ["up", "down", "maintenance"]
       contact:
         type: string
