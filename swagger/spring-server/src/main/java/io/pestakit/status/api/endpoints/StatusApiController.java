@@ -3,7 +3,7 @@ package io.pestakit.status.api.endpoints;
 import io.pestakit.status.api.ServicesApi;
 import io.pestakit.status.api.model.ServiceGet;
 import io.pestakit.status.api.model.ServicePost;
-import io.pestakit.status.jpa.ServiceJPA;
+import io.pestakit.status.entities.ServiceEntity;
 import io.pestakit.status.repositories.ServiceRepository;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +39,11 @@ public class StatusApiController implements ServicesApi
    {
       if(checkServicePost(service))
       {
-         // Convert the service to a serviceJPA
-         ServiceJPA serviceJPA = toServiceEntity(service);
+         // Convert the service to a serviceEntity
+         ServiceEntity serviceEntity = toServiceEntity(service);
 
          // Save the service into the DB
-         serviceRepository.save(serviceJPA);
+         serviceRepository.save(serviceEntity);
 
          // Return a OK code
          return new ResponseEntity<Void>(HttpStatus.OK);
@@ -75,7 +75,7 @@ public class StatusApiController implements ServicesApi
    {
       // The list of services to return to the user
       ArrayList<ServiceGet> liste = new ArrayList<>();
-      Iterable<ServiceJPA> searchResult = null;
+      Iterable<ServiceEntity> searchResult = null;
 
       // If we want a specific status
       if(status != null)
@@ -86,7 +86,7 @@ public class StatusApiController implements ServicesApi
          searchResult = serviceRepository.findAll();
 
       // Prepare the response content
-      for(ServiceJPA s : searchResult)
+      for(ServiceEntity s : searchResult)
       {
          // Convert the serviceEntity to a serviceGet
          ServiceGet service = toService(s);
@@ -165,14 +165,14 @@ public class StatusApiController implements ServicesApi
    ////////////////////////////////////////////////////////////////////////////////////////////
 
    /**
-    * Private method used to go from a Service to a ServiceJPA
+    * Private method used to go from a Service to a ServiceEntity
     *
     * @param service the received service
-    * @return the new ServiceJPA
+    * @return the new ServiceEntity
     */
-   private ServiceJPA toServiceEntity(ServicePost service)
+   private ServiceEntity toServiceEntity(ServicePost service)
    {
-      ServiceJPA entity = new ServiceJPA();
+      ServiceEntity entity = new ServiceEntity();
 
       entity.setStatusAddress(service.getStatusAddress());
       entity.setState(service.getState());
@@ -184,19 +184,19 @@ public class StatusApiController implements ServicesApi
    }
 
    /**
-    * Private method used to go from a serviceJPA to a Service
-    * @param serviceJPA the received serviceJPA
+    * Private method used to go from a serviceEntity to a Service
+    * @param serviceEntity the received serviceEntity
     * @return the new Service
     */
-   private ServiceGet toService(ServiceJPA serviceJPA) {
+   private ServiceGet toService(ServiceEntity serviceEntity) {
       ServiceGet service = new ServiceGet();
 
-      service.setContact(serviceJPA.getContact());
-      service.setDescription(serviceJPA.getDescription());
-      service.setSelf(BASE_URL + serviceJPA.getId());
-      service.setName(serviceJPA.getName());
-      service.setState(serviceJPA.getState());
-      service.setStatusAddress(serviceJPA.getStatusAddress());
+      service.setContact(serviceEntity.getContact());
+      service.setDescription(serviceEntity.getDescription());
+      service.setSelf(BASE_URL + serviceEntity.getId());
+      service.setName(serviceEntity.getName());
+      service.setState(serviceEntity.getState());
+      service.setStatusAddress(serviceEntity.getStatusAddress());
 
       return service;
    }

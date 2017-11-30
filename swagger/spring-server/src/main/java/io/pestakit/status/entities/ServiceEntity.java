@@ -1,4 +1,4 @@
-package io.pestakit.status.jpa;
+package io.pestakit.status.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @Entity
-public class ServiceJPA implements Serializable
+public class ServiceEntity implements Serializable
 {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
