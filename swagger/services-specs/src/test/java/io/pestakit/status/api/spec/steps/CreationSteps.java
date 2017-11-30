@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Matthieu Chatelant, Lara Chauffoureaux, Alain Hardy
@@ -58,6 +59,15 @@ public class CreationSteps
       service = new ServicePost();
       service.setName("Invalid test");
       service.setStatusAddress(null);
+   }
+
+   @Given("^I have an invalid service with an invalid state parameter$")
+   public void i_have_an_invalid_service_with_an_invalid_state_parameter() throws Throwable
+   {
+      service = new ServicePost();
+      service.setName("Invalid state");
+      service.setStatusAddress("0.0.0.0");
+      service.setState("invalid");
    }
 
    @Given("^I recuperate the actual size of the service list$")
@@ -105,6 +115,26 @@ public class CreationSteps
       }
    }
 
+   @When("^I GET on /services\\?state=(.*) endpoint$")
+   public void i_GET_on_services_with_state_endpoint(String state) throws Throwable
+   {
+      try
+      {
+         lastApiResponse = api.getServicesWithHttpInfo(state);
+         lastApiCallThrewException = false;
+         lastApiException = null;
+         lastStatusCode = lastApiResponse.getStatusCode();
+         services = (List<ServiceGet>) lastApiResponse.getData();
+      }
+      catch (ApiException e)
+      {
+         lastApiCallThrewException = true;
+         lastApiResponse = null;
+         lastApiException = e;
+         lastStatusCode = lastApiException.getCode();
+      }
+   }
+
    @Then("^I receive a (\\d+) status code$")
    public void i_receive_a_status_code(int arg1) throws Throwable
    {
@@ -123,5 +153,21 @@ public class CreationSteps
       int new_size = services.size();
 
       assertEquals(size + 1, new_size);
+   }
+
+   @Then("^I receive a list of services with state (.*)$")
+   public void i_receive_a_list_of_services_with_wanted_state(String state) throws Throwable
+   {
+      System.out.println("size " + services.size());
+      boolean servicesHaveTheCorrectState = true;
+
+      for(ServiceGet service : services) {
+         if(! service.getState().equals(state)) {
+            servicesHaveTheCorrectState = false;
+            break;
+         }
+      }
+
+      assertTrue(servicesHaveTheCorrectState);
    }
 }

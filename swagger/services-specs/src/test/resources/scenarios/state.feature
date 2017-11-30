@@ -5,17 +5,17 @@ Feature: State of the services in the API
 
   Scenario: list the services with maintenance state
     When I GET on /services?state=maintenance endpoint
-    Then I receive a list of services in maintenance
+    Then I receive a list of services with state maintenance
     Then I receive a 200 status code
 
   Scenario: list the services with down state
     When I GET on /services?state=down endpoint
-    Then I receive a list of downed services
+    Then I receive a list of services with state down
     Then I receive a 200 status code
 
   Scenario: list the services with up state
     When I GET on /services?state=up endpoint
-    Then I receive a list of up services
+    Then I receive a list of services with state up
     Then I receive a 200 status code
 
   Scenario: list the services with an invalid state parameter
