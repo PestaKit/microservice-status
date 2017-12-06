@@ -84,7 +84,16 @@ public class StatusApiController implements ServicesApi
       if(status != null)
       {
          status = status.toLowerCase();
-         searchResult = serviceRepository.findByState(State.fromValue(status));
+         State state = State.fromValue(status);
+
+         if(state != null)
+         {
+            searchResult = serviceRepository.findByState(state);
+         }
+         else
+         {
+            // TO BE DONE WHEN MATTHIEU IS FINISHED > faut pas rever hein
+         }
       }
 
       // Otherwise return everything
@@ -136,34 +145,6 @@ public class StatusApiController implements ServicesApi
                                                       @ApiParam(value = "The new state of the service" ,required=true ) @RequestHeader(value="state", required=true) Integer state)
    {
       return null;
-   }
-
-   ////////////////////////////////////////////////////////////////////////////////////////////
-   ////////////////////// EXCEPTION HANDLING //////////////////////////////////////////////////
-   ////////////////////////////////////////////////////////////////////////////////////////////
-   @ExceptionHandler(Exception.class)
-   @ResponseBody
-   public Map<String,String> errorResponse(Exception ex, HttpServletResponse response)
-   {
-      // Map containing error messages
-      Map<String,String> errorMap = new HashMap<>();
-
-      // Insert the error message into the map
-      errorMap.put("errorMessage",ex.getMessage());
-
-      StringWriter sw = new StringWriter();
-      PrintWriter pw = new PrintWriter(sw);
-      ex.printStackTrace(pw);
-      String stackTrace = sw.toString();
-
-      // Insert the prepared stack trace message into the map
-      errorMap.put("errorStackTrace", stackTrace);
-
-      // Set the response status to the desired error code
-      response.setStatus(HttpStatus.BAD_REQUEST.value());
-
-      // Return the prepared error map
-      return errorMap;
    }
 
    ////////////////////////////////////////////////////////////////////////////////////////////
