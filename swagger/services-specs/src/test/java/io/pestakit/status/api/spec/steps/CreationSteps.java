@@ -8,6 +8,7 @@ import io.pestakit.status.ApiResponse;
 import io.pestakit.status.api.ServicesApi;
 import io.pestakit.status.api.dto.ServiceGet;
 import io.pestakit.status.api.dto.ServicePost;
+import io.pestakit.status.api.dto.State;
 import io.pestakit.status.api.spec.helpers.Environment;
 
 import java.util.List;
@@ -51,6 +52,7 @@ public class CreationSteps
       service = new ServicePost();
       service.setName("Test");
       service.setStatusAddress("10.10.10.3");
+      service.setState(State.UP);
    }
 
    @Given("^I have an invalid service payload$")
@@ -61,6 +63,7 @@ public class CreationSteps
       service.setStatusAddress(null);
    }
 
+   /*
    @Given("^I have an invalid service with an invalid state parameter$")
    public void i_have_an_invalid_service_with_an_invalid_state_parameter() throws Throwable
    {
@@ -69,6 +72,7 @@ public class CreationSteps
       service.setStatusAddress("0.0.0.0");
       service.setState("invalid");
    }
+   */
 
    @Given("^I recuperate the actual size of the service list$")
    public void i_recuperate_the_actual_size_of_the_service_list() throws Throwable {
@@ -162,7 +166,7 @@ public class CreationSteps
       boolean servicesHaveTheCorrectState = true;
 
       for(ServiceGet service : services) {
-         if(! service.getState().equals(state)) {
+         if(! service.getState().toString().equals(state)) {
             servicesHaveTheCorrectState = false;
             break;
          }
