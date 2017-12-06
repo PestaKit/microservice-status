@@ -183,3 +183,29 @@ definitions:
         enum: ["up", "down", "maintenance"]
       contact:
         type: string
+
+  Error:
+    type: object
+    properties:
+      timestamp:
+        type: string
+        #format: date-time
+      message:
+        type: string
+      exception:
+        type: string
+      fields:
+        type: array
+        items:
+          $ref: '#/definitions/ErroneousField'
+
+  ErroneousField:
+    type: object
+    required:
+      - fieldName
+      - errorCode
+    properties:
+      fieldName:
+        type: string
+      errorCode:
+        type: string

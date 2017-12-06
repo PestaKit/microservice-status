@@ -24,6 +24,8 @@ public class CreationSteps
    private Environment environment;
    private ServicesApi api;
 
+   // Apiexception.getMessage -> désérialiser avec gson dans un object Error.
+
    private ServicePost service;
    private List<ServiceGet> services;
    private int size;
