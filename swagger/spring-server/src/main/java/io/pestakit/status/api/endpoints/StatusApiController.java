@@ -6,11 +6,13 @@ import io.pestakit.status.api.model.ServicePost;
 import io.pestakit.status.api.model.State;
 import io.pestakit.status.entities.ServiceEntity;
 import io.pestakit.status.repositories.ServiceRepository;
+import io.pestakit.status.validators.ServicePostValidator;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -223,5 +225,13 @@ public class StatusApiController implements ServicesApi
    {
       return service.getName() != null &&
          service.getStatusAddress() != null;
+   }
+
+   @Autowired
+   ServicePostValidator servicePostValidator;
+
+   @InitBinder("service")
+   public void initBinder(WebDataBinder binder) {
+      binder.addValidators(servicePostValidator);
    }
 }
