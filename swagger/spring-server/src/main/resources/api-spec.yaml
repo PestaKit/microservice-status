@@ -49,6 +49,32 @@ definitions:
       contact:
         type: string
 
+  Error:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          #format: date-time
+        message:
+          type: string
+        exception:
+          type: string
+        fields:
+          type: array
+          items:
+            $ref: '#/definitions/ErroneousField'
+
+  ErroneousField:
+    type: object
+    required:
+      - fieldName
+      - errorCode
+    properties:
+      fieldName:
+        type: string
+      errorCode:
+        type: string
+
 paths:
   /services:
     get:
@@ -186,65 +212,3 @@ paths:
           description: Invalid ID
         '404':
           description: Service not found
-definitions:
-  ServicePost:
-    type: object
-    required:
-      - name
-      - statusAddress
-    properties:
-      name:
-        type: string
-      statusAddress:
-        type: string
-      description:
-        type: string
-      state:
-        type: string
-        enum: ["up", "down", "maintenance"]
-      contact:
-        type: string
-
-  ServiceGet:
-    type: object
-
-    properties:
-      self:
-        type: string
-      name:
-        type: string
-      statusAddress:
-        type: string
-      description:
-        type: string
-      state:
-        type: string
-        enum: ["up", "down", "maintenance"]
-      contact:
-        type: string
-
-  Error:
-    type: object
-    properties:
-      timestamp:
-        type: string
-        #format: date-time
-      message:
-        type: string
-      exception:
-        type: string
-      fields:
-        type: array
-        items:
-          $ref: '#/definitions/ErroneousField'
-
-  ErroneousField:
-    type: object
-    required:
-      - fieldName
-      - errorCode
-    properties:
-      fieldName:
-        type: string
-      errorCode:
-        type: string
