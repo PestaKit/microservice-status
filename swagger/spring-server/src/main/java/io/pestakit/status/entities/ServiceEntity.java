@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -19,6 +20,7 @@ public class ServiceEntity implements Serializable
    private String name;
    private String statusAddress;
    private String description;
+   @NotNull
    private State state;
    private String contact;
 
