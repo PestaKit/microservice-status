@@ -82,7 +82,16 @@ public class StatusApiController implements ServicesApi
       if(status != null)
       {
          status = status.toLowerCase();
-         searchResult = serviceRepository.findByState(State.fromValue(status));
+         State state = State.fromValue(status);
+
+         if(state != null)
+         {
+            searchResult = serviceRepository.findByState(state);
+         }
+         else
+         {
+            // TO BE DONE WHEN MATTHIEU IS FINISHED
+         }
       }
 
       // Otherwise return everything
