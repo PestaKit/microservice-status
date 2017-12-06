@@ -3,6 +3,7 @@ package io.pestakit.status.api.endpoints;
 import io.pestakit.status.api.ServicesApi;
 import io.pestakit.status.api.model.ServiceGet;
 import io.pestakit.status.api.model.ServicePost;
+import io.pestakit.status.api.model.State;
 import io.pestakit.status.entities.ServiceEntity;
 import io.pestakit.status.repositories.ServiceRepository;
 import io.pestakit.status.validators.ServicePostValidator;
@@ -83,7 +84,7 @@ public class StatusApiController implements ServicesApi
       if(status != null)
       {
          status = status.toLowerCase();
-         searchResult = serviceRepository.findByState(ServiceEntity.State.fromValue(status));
+         searchResult = serviceRepository.findByState(State.fromValue(status));
       }
 
       // Otherwise return everything
@@ -180,7 +181,7 @@ public class StatusApiController implements ServicesApi
       ServiceEntity entity = new ServiceEntity();
 
       entity.setStatusAddress(service.getStatusAddress());
-      entity.setState(ServiceEntity.State.values()[service.getState().ordinal()]);
+      entity.setState(service.getState());
       entity.setName(service.getName());
       entity.setDescription(service.getDescription());
       entity.setContact(service.getContact());
@@ -200,7 +201,7 @@ public class StatusApiController implements ServicesApi
       service.setDescription(serviceEntity.getDescription());
       service.setSelf(BASE_URL + serviceEntity.getId());
       service.setName(serviceEntity.getName());
-      service.setState(ServiceGet.StateEnum.values()[serviceEntity.getState().ordinal()]);
+      service.setState(serviceEntity.getState());
       service.setStatusAddress(serviceEntity.getStatusAddress());
 
       return service;
