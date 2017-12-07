@@ -80,12 +80,15 @@ public class StatusApiController implements ServicesApi
          status = status.toLowerCase();
          State state = State.fromValue(status);
 
+         // If the enum is valid
          if (state != null)
          {
             searchResult = serviceRepository.findByState(state);
-         } else
+         }
+         else
          {
-            // TO BE DONE WHEN MATTHIEU IS FINISHED > faut pas rever hein
+            // Throw a runtime exception to be catched in exception handler
+            throw new IllegalArgumentException("Illegal status");
          }
       }
 

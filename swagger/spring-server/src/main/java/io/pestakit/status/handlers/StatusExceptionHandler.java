@@ -10,6 +10,7 @@ import org.springframework.validation.FieldError;
 import io.pestakit.status.api.model.Error;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -29,6 +30,18 @@ public class StatusExceptionHandler extends ResponseEntityExceptionHandler
    public StatusExceptionHandler()
    {
       super();
+   }
+
+   @ExceptionHandler(value = {IllegalArgumentException.class})
+   protected ResponseEntity<Object> handleIllegalStatusArgument(RuntimeException ex, WebRequest request)
+   {
+      List<ErroneousField> erroneousFields = new ArrayList<ErroneousField>();
+      ErroneousField erroneousField = new ErroneousField();
+      erroneousField.setField("Status");
+      erroneousField.setReason("Status provided in the path is not valid. Check documentation !");
+      erroneousFields.add(erroneousField);
+
+      return unprocessableEntity().body((Object) newError(ex, ex.getMessage(), DateTime.now(), erroneousFields));
    }
 
 
