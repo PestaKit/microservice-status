@@ -1,5 +1,6 @@
 package io.pestakit.status.api.spec.steps;
 
+import com.google.gson.Gson;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -9,6 +10,7 @@ import io.pestakit.status.api.ServicesApi;
 import io.pestakit.status.api.dto.ServiceGet;
 import io.pestakit.status.api.dto.ServicePost;
 import io.pestakit.status.api.dto.State;
+import io.pestakit.status.api.dto.Error;
 import io.pestakit.status.api.spec.helpers.Environment;
 
 import java.util.List;
@@ -33,13 +35,16 @@ public class CreationSteps
 
    private ApiResponse lastApiResponse;
    private ApiException lastApiException;
+   private Error errorDetails;
    private boolean lastApiCallThrewException;
    private int lastStatusCode;
+   private Gson gson;
 
    public CreationSteps(Environment environment)
    {
       this.environment = environment;
       this.api = environment.getApi();
+      this.gson = new Gson();
    }
 
    @Given("^there is a Services server$")
@@ -109,6 +114,7 @@ public class CreationSteps
          lastApiResponse = api.getServicesWithHttpInfo(null);
          lastApiCallThrewException = false;
          lastApiException = null;
+         errorDetails = null;
          lastStatusCode = lastApiResponse.getStatusCode();
          services = (List<ServiceGet>) lastApiResponse.getData();
       }
@@ -117,6 +123,7 @@ public class CreationSteps
          lastApiCallThrewException = true;
          lastApiResponse = null;
          lastApiException = e;
+         errorDetails = gson.fromJson(lastApiException.getMessage(), Error.class);
          lastStatusCode = lastApiException.getCode();
       }
    }
@@ -129,6 +136,7 @@ public class CreationSteps
          lastApiResponse = api.getServicesWithHttpInfo(state);
          lastApiCallThrewException = false;
          lastApiException = null;
+         errorDetails = null;
          lastStatusCode = lastApiResponse.getStatusCode();
          services = (List<ServiceGet>) lastApiResponse.getData();
       }
@@ -137,6 +145,7 @@ public class CreationSteps
          lastApiCallThrewException = true;
          lastApiResponse = null;
          lastApiException = e;
+         errorDetails = gson.fromJson(lastApiException.getMessage(), Error.class);
          lastStatusCode = lastApiException.getCode();
       }
    }
