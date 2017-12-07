@@ -67,12 +67,12 @@ definitions:
   ErroneousField:
     type: object
     required:
-      - fieldName
-      - errorCode
+      - field
+      - reason
     properties:
-      fieldName:
+      field:
         type: string
-      errorCode:
+      reason:
         type: string
 
 paths:
