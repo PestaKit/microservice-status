@@ -185,20 +185,8 @@ public class StatusApiController implements ServicesApi
       return service;
    }
 
-   /**
-    * Check whether the service is valid
-    *
-    * @param service the service to check
-    * @return the result of the check. True = success, False = Fail.
-    */
-   private boolean checkServicePost(ServicePost service)
-   {
-      return service.getName() != null &&
-         service.getStatusAddress() != null;
-   }
-
    // Add a new validator to the service entity we get as an input
-   @InitBinder(value="service")
+   @InitBinder(value="servicePost")
    public void initBinder(WebDataBinder binder)
    {
       binder.addValidators(servicePostValidator);
