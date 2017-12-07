@@ -20,6 +20,10 @@ public class ServicePostValidator implements Validator
       // Check des champs
       ServicePost service = (ServicePost) o;
 
-      errors.rejectValue("nom du champ", "status string");
+      if(service.getName().length() > 10) {
+         errors.rejectValue("name", "c'est planté");
+      }
+
+      System.out.println("Erreur");
    }
 }

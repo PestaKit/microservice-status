@@ -19,59 +19,83 @@ import java.util.List;
 import static org.springframework.http.ResponseEntity.unprocessableEntity;
 
 /**
- * Created by ali.miladi on 23.11.2017.
+ * Created by Ali Miladi on 23.11.2017.
+ * Modified by Matthieu Chatelan
  */
 
 @ControllerAdvice
 public class StatusExceptionHandler extends ResponseEntityExceptionHandler
 {
-   public StatusExceptionHandler() {
+   public StatusExceptionHandler()
+   {
       super();
    }
 
 
+   /**
+    * When the post content is not readable
+    */
    @Override
    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
                                                                  HttpHeaders headers,
                                                                  HttpStatus status,
-                                                                 WebRequest request) {
+                                                                 WebRequest request)
+   {
       List<ErroneousField> erroneousFields = new ArrayList<ErroneousField>();
       ErroneousField erroneousField = new ErroneousField();
-      erroneousField.setFieldName("DTO");
-      erroneousField.setErrorCode("Empty");
+      erroneousField.setField("DTO");
+      erroneousField.setReason("The DTO format is not readable. Check documentation !");
       erroneousFields.add(erroneousField);
-      return unprocessableEntity().body((Object)newError(ex, ex.getMessage(), DateTime.now(), erroneousFields));
+
+      return unprocessableEntity().body((Object) newError(ex, ex.getMessage(), DateTime.now(), erroneousFields));
    }
 
 
+   /**
+    * When the arguments are not valid
+    */
    @Override
    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                  HttpHeaders headers,
                                                                  HttpStatus status,
-                                                                 WebRequest request) {
+                                                                 WebRequest request)
+   {
       Error error = newError(ex, ex.getMessage(), DateTime.now(), getErroneousFields(ex));
-      return unprocessableEntity().body((Object)error);
+
+      return unprocessableEntity().body((Object) error);
    }
 
-   private List<ErroneousField> getErroneousFields(MethodArgumentNotValidException ex){
+   /**
+    * Get the list of erroneous fields
+    * @param ex
+    * @return
+    */
+   private List<ErroneousField> getErroneousFields(MethodArgumentNotValidException ex)
+   {
       List<ErroneousField> erroneousFields = new ArrayList<>();
-      for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
+
+      for (FieldError fieldError : ex.getBindingResult().getFieldErrors())
+      {
          ErroneousField erroneousField = new ErroneousField();
-         erroneousField.setErrorCode(fieldError.getCode());
-         erroneousField.setFieldName(fieldError.getField());
+
+         erroneousField.setReason(fieldError.getCode());
+         erroneousField.setField(fieldError.getField());
+
          erroneousFields.add(erroneousField);
       }
+
       return erroneousFields;
    }
 
 
-   private Error newError(Exception exception, String message, DateTime timestamp, List<ErroneousField> erroneousFields) {
+   private Error newError(Exception exception, String message, DateTime timestamp, List<ErroneousField> erroneousFields)
+   {
       Error error = new Error();
       error.setException(exception.toString());
       error.setMessage(exception.getMessage());
       error.setTimestamp(DateTime.now().toString());
       error.setFields(erroneousFields);
+
       return error;
    }
-
 }
