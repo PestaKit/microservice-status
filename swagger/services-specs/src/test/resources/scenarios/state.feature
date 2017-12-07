@@ -20,7 +20,7 @@ Feature: State of the services in the API
 
   Scenario: list the services with an invalid state parameter
     When I GET on /services?state=toto endpoint
-    Then I receive a 404 status code
+    Then I receive a 400 status code
 
 #  Scenario: try to add an service with an invalid state parameter
 #    Given I have an invalid service with an invalid state parameter

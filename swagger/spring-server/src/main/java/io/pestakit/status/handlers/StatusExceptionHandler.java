@@ -41,7 +41,7 @@ public class StatusExceptionHandler extends ResponseEntityExceptionHandler
       erroneousField.setReason("Status provided in the path is not valid. Check documentation !");
       erroneousFields.add(erroneousField);
 
-      return unprocessableEntity().body((Object) newError(ex, ex.getMessage(), DateTime.now(), erroneousFields));
+      return ResponseEntity.badRequest().body((Object) newError(ex, ex.getMessage(), DateTime.now(), erroneousFields));
    }
 
 
@@ -60,7 +60,7 @@ public class StatusExceptionHandler extends ResponseEntityExceptionHandler
       erroneousField.setReason("The DTO format is not readable. Check documentation !");
       erroneousFields.add(erroneousField);
 
-      return unprocessableEntity().body((Object) newError(ex, ex.getMessage(), DateTime.now(), erroneousFields));
+      return ResponseEntity.badRequest().body((Object) newError(ex, ex.getMessage(), DateTime.now(), erroneousFields));
    }
 
 
@@ -75,7 +75,7 @@ public class StatusExceptionHandler extends ResponseEntityExceptionHandler
    {
       Error error = newError(ex, ex.getMessage(), DateTime.now(), getErroneousFields(ex));
 
-      return unprocessableEntity().body((Object) error);
+      return ResponseEntity.badRequest().body((Object) error);
    }
 
    /**
