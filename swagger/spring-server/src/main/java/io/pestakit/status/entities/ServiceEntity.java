@@ -20,7 +20,6 @@ public class ServiceEntity implements Serializable
    private String name;
    private String statusAddress;
    private String description;
-   @NotNull
    private State state;
    private String contact;
 
