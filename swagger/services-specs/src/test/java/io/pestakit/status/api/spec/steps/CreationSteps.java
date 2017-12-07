@@ -70,16 +70,14 @@ public class CreationSteps
       service.setStatusAddress(null);
    }
 
-   /*
    @Given("^I have an invalid service with an invalid state parameter$")
    public void i_have_an_invalid_service_with_an_invalid_state_parameter() throws Throwable
    {
       service = new ServicePost();
       service.setName("Invalid state");
       service.setStatusAddress("0.0.0.0");
-      service.setState("invalid");
+      service.setState(null);
    }
-   */
 
    @Given("^I recuperate the actual size of the service list$")
    public void i_recuperate_the_actual_size_of_the_service_list() throws Throwable {
