@@ -133,6 +133,17 @@ paths:
                 description: The unique identifier for the service (PLEASE NOT IT DOWN).
         '400':
           description: Bad request
+    delete:
+      tags:
+        - services
+      summary: flush all the existing services FOR TEST PURPOSE ONLY
+      description: delete all the services
+      operationId: deleteServices
+      responses:
+        '200':
+          description: success
+        '404':
+          description: Service not found
 
   '/services/{serviceUID}':
     get:
