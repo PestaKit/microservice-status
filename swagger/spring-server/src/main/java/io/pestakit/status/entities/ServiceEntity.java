@@ -17,15 +17,22 @@ public class ServiceEntity implements Serializable
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Integer id;
 
+   private String uid;
+
    private String name;
    private String statusAddress;
    private String description;
    private State state;
    private String contact;
 
-   public Integer getId()
+   public String getUid()
    {
-      return id;
+      return uid;
+   }
+
+   public void setUid(String uid)
+   {
+      this.uid = uid;
    }
 
    public String getName()

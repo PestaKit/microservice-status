@@ -1,6 +1,7 @@
 package io.pestakit.status.api.endpoints;
 
 import io.pestakit.status.api.ServicesApi;
+import io.pestakit.status.api.model.InlineResponse201;
 import io.pestakit.status.api.model.ServiceGet;
 import io.pestakit.status.api.model.ServicePost;
 import io.pestakit.status.api.model.State;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class StatusApiController implements ServicesApi
@@ -36,7 +38,7 @@ public class StatusApiController implements ServicesApi
     * @return a response code
     */
    @Override
-   public ResponseEntity<Void> addService(@ApiParam(value = "" ,required=true ) @Valid @RequestBody ServicePost service)
+   public ResponseEntity<InlineResponse201> addService(@ApiParam(value = "" ,required=true ) @Valid @RequestBody ServicePost service)
    {
       // Convert the service to a serviceEntity
       ServiceEntity serviceEntity = toServiceEntity(service);
@@ -45,20 +47,22 @@ public class StatusApiController implements ServicesApi
       serviceRepository.save(serviceEntity);
 
       // Return a OK code
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseEntity<>(new InlineResponse201().self("http://localhost:8080/api/services/" + serviceEntity.getUid()).uid(serviceEntity.getUid()), HttpStatus.CREATED);
    }
 
    /**
     * Method used when a get is made with a specific id to get the related service
     *
-    * @param serviceID the service id of the required service
+    * @param serviceUID the service id of the required service
     * @return a response code and the payload
     */
    @Override
-   public ResponseEntity<ServiceGet> getOneService(@ApiParam(value = "Numeric ID of the service to get.", required = true) @PathVariable("serviceID") Integer serviceID,
-                                                   @ApiParam(value = "The user token", required = true) @RequestHeader(value = "token", required = true) String token)
+   public ResponseEntity<ServiceGet> getOneService(@ApiParam(value = "Numeric ID of the service to get.",required=true ) @PathVariable("serviceUID") String serviceUID)
    {
-      return null;
+      ServiceEntity serviceEntity = serviceRepository.findByUid(serviceUID);
+      ServiceGet service = toService(serviceEntity);
+
+      return new ResponseEntity<ServiceGet>(service, HttpStatus.OK);
    }
 
    /**
@@ -68,7 +72,7 @@ public class StatusApiController implements ServicesApi
     * @return a list of services and a response code
     */
    @Override
-   public ResponseEntity<List<ServiceGet>> getServices(@ApiParam(value = "Status wanted, none specified mean all", allowableValues = "UP, DOWN, MAINTENANCE") @RequestParam(value = "status", required = false) String status)
+   public ResponseEntity<List<ServiceGet>> getServices( @ApiParam(value = "Status wanted, none specified mean all", allowableValues = "UP, DOWN, MAINTENANCE") @RequestParam(value = "status", required = false) String status)
    {
       // The list of services to return to the user
       ArrayList<ServiceGet> liste = new ArrayList<>();
@@ -111,33 +115,34 @@ public class StatusApiController implements ServicesApi
    /**
     * Fix a service with a put request
     *
-    * @param serviceS
+    * @param service
     * @return
     */
    @Override
-   public ResponseEntity<Void> servicesPut(@ApiParam(value = "", required = true) @RequestBody Object serviceS)
+   public ResponseEntity<Void> servicesServiceUIDPut(@ApiParam(value = "" ,required=true ) @RequestBody Object service)
    {
       return null;
    }
 
    /**
-    * @param serviceID
+    * @param serviceUID
     * @return
     */
    @Override
-   public ResponseEntity<Void> servicesServiceIDDelete(@ApiParam(value = "Numeric ID of the service to delete.", required = true) @PathVariable("serviceID") Integer serviceID)
+   public ResponseEntity<Void> servicesServiceUIDDelete(@ApiParam(value = "Numeric ID of the service to delete.",required=true ) @PathVariable("serviceUID") String serviceUID)
    {
-      return null;
+      serviceRepository.deleteByUid(serviceUID);
+      return new ResponseEntity<Void>(HttpStatus.OK);
    }
 
    /**
-    * @param serviceID
+    * @param serviceUID
     * @param state
     * @return
     */
    @Override
-   public ResponseEntity<Void> servicesServiceIDPatch(@ApiParam(value = "Numeric ID of the service to patch.", required = true) @PathVariable("serviceID") Integer serviceID,
-                                                      @ApiParam(value = "The new state of the service", required = true) @RequestHeader(value = "state", required = true) Integer state)
+   public ResponseEntity<Void> servicesServiceUIDPatch(@ApiParam(value = "Numeric ID of the service to patch.",required=true ) @PathVariable("serviceUID") String serviceUID,
+                                                       @ApiParam(value = "The new state of the service" ,required=true ) @RequestHeader(value="state", required=true) Integer state)
    {
       return null;
    }
@@ -162,6 +167,8 @@ public class StatusApiController implements ServicesApi
       entity.setDescription(service.getDescription());
       entity.setContact(service.getContact());
 
+      entity.setUid(UUID.randomUUID().toString());
+
       return entity;
    }
 
@@ -177,7 +184,7 @@ public class StatusApiController implements ServicesApi
 
       service.setContact(serviceEntity.getContact());
       service.setDescription(serviceEntity.getDescription());
-      service.setSelf(BASE_URL + serviceEntity.getId());
+      service.setSelf(BASE_URL + serviceEntity.getUid());
       service.setName(serviceEntity.getName());
       service.setState(serviceEntity.getState());
       service.setStatusAddress(serviceEntity.getStatusAddress());
