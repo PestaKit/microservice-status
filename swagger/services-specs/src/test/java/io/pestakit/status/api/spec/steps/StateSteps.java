@@ -19,8 +19,6 @@ public class StateSteps
    private Environment environment;
    private ServicesApi api;
 
-   private List<ServiceGet> services;
-
    public StateSteps(Environment environment)
    {
       this.environment = environment;
@@ -51,7 +49,7 @@ public class StateSteps
          environment.setLastApiException(null);
          environment.setLastStatusCode(lastApiResponse.getStatusCode());
 
-         services = (List<ServiceGet>) lastApiResponse.getData();
+         environment.setRecuperatedServices((List<ServiceGet>) lastApiResponse.getData());
       }
       catch (ApiException e)
       {
@@ -65,6 +63,7 @@ public class StateSteps
    public void i_receive_a_list_of_services_with_wanted_state(String state) throws Throwable
    {
       boolean servicesHaveTheCorrectState = true;
+      List<ServiceGet> services = environment.getRecuperatedServices();
 
       for(ServiceGet service : services) {
          if(! service.getState().toString().equals(state)) {

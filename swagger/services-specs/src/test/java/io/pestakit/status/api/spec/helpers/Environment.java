@@ -3,9 +3,11 @@ package io.pestakit.status.api.spec.helpers;
 import io.pestakit.status.ApiException;
 import io.pestakit.status.ApiResponse;
 import io.pestakit.status.api.ServicesApi;
+import io.pestakit.status.api.dto.ServiceGet;
 import io.pestakit.status.api.dto.ServicePost;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -18,6 +20,7 @@ public class Environment {
     private ApiResponse lastApiResponse;
     private int lastStatusCode;
     private ServicePost toPostService;
+    private List<ServiceGet> recuperatedServices;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
@@ -58,5 +61,15 @@ public class Environment {
     public void setToPostService(ServicePost toPostService)
     {
         this.toPostService = toPostService;
+    }
+
+    public List<ServiceGet> getRecuperatedServices()
+    {
+        return recuperatedServices;
+    }
+
+    public void setRecuperatedServices(List<ServiceGet> recuperatedServices)
+    {
+        this.recuperatedServices = recuperatedServices;
     }
 }

@@ -24,7 +24,6 @@ public class SimpleSteps
    private Environment environment;
    private ServicesApi api;
 
-   private List<ServiceGet> services;
    private int size;
 
    public SimpleSteps(Environment environment)
@@ -59,7 +58,7 @@ public class SimpleSteps
    @Given("^I recuperate the actual size of the service list$")
    public void i_recuperate_the_actual_size_of_the_service_list() throws Throwable {
       i_GET_on_services_endpoint();
-      size = services.size();
+      size = environment.getRecuperatedServices().size();
    }
 
    @When("^I GET on /services endpoint$")
@@ -73,7 +72,7 @@ public class SimpleSteps
          environment.setLastApiException(null);
          environment.setLastStatusCode(lastApiResponse.getStatusCode());
 
-         services = (List<ServiceGet>) lastApiResponse.getData();
+         environment.setRecuperatedServices((List<ServiceGet>) lastApiResponse.getData());
       }
       catch (ApiException e)
       {
@@ -111,13 +110,13 @@ public class SimpleSteps
    @Then("^I receive a list of services$")
    public void i_receive_a_list_of_services() throws Throwable
    {
-      assertNotNull(services);
+      assertNotNull(environment.getRecuperatedServices());
    }
 
    @Then("^The size should be greater by one$")
    public void the_size_should_be_greater_by_one() throws Throwable {
       i_GET_on_services_endpoint();
-      int new_size = services.size();
+      int new_size = environment.getRecuperatedServices().size();
 
       assertEquals(size + 1, new_size);
    }
