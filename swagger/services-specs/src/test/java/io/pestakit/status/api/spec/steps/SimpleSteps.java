@@ -13,8 +13,7 @@ import io.pestakit.status.api.spec.helpers.Environment;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * @author Matthieu Chatelan, Lara Chauffoureaux, Alain Hardy
@@ -25,6 +24,7 @@ public class SimpleSteps
    private ServicesApi api;
 
    private int size;
+   private String passphrase;
 
    public SimpleSteps(Environment environment)
    {
@@ -56,9 +56,22 @@ public class SimpleSteps
    }
 
    @Given("^I recuperate the actual size of the service list$")
-   public void i_recuperate_the_actual_size_of_the_service_list() throws Throwable {
+   public void i_recuperate_the_actual_size_of_the_service_list() throws Throwable
+   {
       i_GET_on_services_endpoint();
       size = environment.getRecuperatedServices().size();
+   }
+
+   @Given("^I have a wrong passphrase$")
+   public void i_have_a_wrong_passphrase() throws Throwable
+   {
+      passphrase = "toto";
+   }
+
+   @Given("^I have a correct passphrase$")
+   public void i_have_a_correct_passphrase() throws Throwable
+   {
+      passphrase = "ca2f2315-f538-42f7-a68e-7817c9b57911";
    }
 
    @When("^I GET on /services endpoint$")
@@ -101,6 +114,25 @@ public class SimpleSteps
       }
    }
 
+   @When("^I DELETE on the /services endpoint$")
+   public void i_DELETE_on_the_services_endpoint() throws Throwable
+   {
+      try
+      {
+         ApiResponse lastApiResponse = api.deleteServicesWithHttpInfo(passphrase);
+
+         environment.setLastApiResponse(lastApiResponse);
+         environment.setLastApiException(null);
+         environment.setLastStatusCode(lastApiResponse.getStatusCode());
+      }
+      catch (ApiException e)
+      {
+         environment.setLastApiResponse(null);
+         environment.setLastApiException(e);
+         environment.setLastStatusCode(e.getCode());
+      }
+   }
+
    @Then("^I receive a (\\d+) status code$")
    public void i_receive_a_status_code(int arg1) throws Throwable
    {
@@ -114,10 +146,23 @@ public class SimpleSteps
    }
 
    @Then("^The size should be greater by one$")
-   public void the_size_should_be_greater_by_one() throws Throwable {
+   public void the_size_should_be_greater_by_one() throws Throwable
+   {
       i_GET_on_services_endpoint();
       int new_size = environment.getRecuperatedServices().size();
 
       assertEquals(size + 1, new_size);
+   }
+
+   @Then("^I GET a non-empty list$")
+   public void i_GET_a_non_empty_list() throws Throwable
+   {
+      assertFalse(environment.getRecuperatedServices().size() == 0);
+   }
+
+   @Then("^I GET an empty list$")
+   public void i_GET_an_empty_list() throws Throwable
+   {
+      assertTrue(environment.getRecuperatedServices().size() == 0);
    }
 }

@@ -33,7 +33,7 @@ public class InitializationSteps
    {
       try
       {
-         ApiResponse lastApiResponse = api.deleteServicesWithHttpInfo();
+         ApiResponse lastApiResponse = api.deleteServicesWithHttpInfo("ca2f2315-f538-42f7-a68e-7817c9b57911");
 
          environment.setLastApiResponse(lastApiResponse);
          environment.setLastApiException(null);
