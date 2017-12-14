@@ -1,13 +1,16 @@
 swagger: '2.0'
 info:
-  version: 0.2.0
+  version: 0.2.1
   title: Status API
   description: An API used to monitor status of various subscribed services
 host: 'localhost:8080'
-basePath: /
+basePath: /api
 tags:
   - name: services
-    description: Everything about services
+    description: Endpoints to manage services (add one service or get the list of all services)
+
+  - name: service
+    description: Endpoints to manage a single service
 schemes:
   - http
 
@@ -21,6 +24,7 @@ definitions:
     required:
       - name
       - statusAddress
+      - state
     properties:
       name:
         type: string
@@ -118,16 +122,85 @@ paths:
       responses:
         '201':
           description: created
+          schema:
+            type: object
+            properties:
+              self:
+                type: string
+                description: The endpoint to contact to get the service status.
+              uid:
+                type: string
+                description: The unique identifier for the service (PLEASE NOT IT DOWN).
         '400':
           description: Bad request
-    put:
+    delete:
       tags:
         - services
+      summary: flush all the existing services FOR TEST PURPOSE ONLY
+      description: delete all the services
+      operationId: deleteServices
+      responses:
+        '200':
+          description: success
+        '404':
+          description: Service not found
+
+  '/services/{serviceUID}':
+    get:
+      tags:
+        - service
+      summary: Get the status of the selected service
+      description: ''
+      operationId: getOneService
+      parameters:
+        - in: path
+          name: serviceUID
+          type: string
+          required: true
+          description: Numeric ID of the service to get.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/ServiceGet'
+        '400':
+          description: Invalid ID
+        '404':
+          description: Service not found
+    patch:
+      tags:
+        - service
+      summary: Set the maintenance status for a service
+      description: ''
+      parameters:
+        - in: path
+          name: serviceUID
+          required: true
+          description: Numeric ID of the service to patch.
+          type: string
+        - in: header
+          name: state
+          type: integer
+          required: true
+          description: The new state of the service
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid ID
+        '404':
+          description: Service not found
+
+    put:
+      tags:
+        - service
       summary: modify a subscribed service
       description: ''
       parameters:
         - in: body
-          name: Service(s)
+          name: Service
           required: true
           schema:
             type: object
@@ -142,67 +215,16 @@ paths:
           description: Forbidden
         '404':
           description: Service not found
-  '/services/{serviceID}':
-    get:
-      tags:
-        - services
-      summary: Get the status of the selected service
-      description: ''
-      operationId: getOneService
-      parameters:
-        - in: path
-          name: serviceID
-          type: integer
-          required: true
-          description: Numeric ID of the service to get.
-        - in: header
-          name: token
-          required: true
-          type: string
-          description: The user token
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: success
-          schema:
-            $ref: '#/definitions/ServiceGet'
-        '400':
-          description: Invalid ID
-        '404':
-          description: Service not found
-    patch:
-      tags:
-        - services
-      summary: Set the maintenance status for a service
-      description: ''
-      parameters:
-        - in: path
-          name: serviceID
-          required: true
-          description: Numeric ID of the service to patch.
-          type: integer
-        - in: header
-          name: state
-          type: integer
-          required: true
-          description: The new state of the service
-      responses:
-        '200':
-          description: OK
-        '400':
-          description: Invalid ID
-        '404':
-          description: Service not found
+
     delete:
       tags:
-        - services
+        - service
       summary: Remove a subscribed service from the pool
       description: ''
       parameters:
         - in: path
-          name: serviceID
-          type: integer
+          name: serviceUID
+          type: string
           required: true
           description: Numeric ID of the service to delete.
       responses:
