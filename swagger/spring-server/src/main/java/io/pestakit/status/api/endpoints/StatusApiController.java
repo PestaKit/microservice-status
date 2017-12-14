@@ -17,6 +17,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +29,8 @@ public class StatusApiController implements ServicesApi
    ServiceRepository serviceRepository;
    @Autowired
    ServicePostValidator servicePostValidator;
+
+   private final String PASSPHRASE = "ca2f2315-f538-42f7-a68e-7817c9b57911";
 
    private final String BASE_URL = "http://localhost:8080/services/";
 
@@ -148,10 +151,17 @@ public class StatusApiController implements ServicesApi
    }
 
    @Override
-   public ResponseEntity<Void> deleteServices()
+   public ResponseEntity<Void> deleteServices( @NotNull @ApiParam(value = "Secret passphrase to access this endpoint", required = true) @RequestParam(value = "passphrase", required = true) String passphrase)
    {
-      serviceRepository.deleteAll();
-      return new ResponseEntity<Void>(HttpStatus.OK);
+      if(passphrase.equals(PASSPHRASE))
+      {
+         serviceRepository.deleteAll();
+         return new ResponseEntity<Void>(HttpStatus.OK);
+      }
+      else
+      {
+         return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+      }
    }
 
    ////////////////////////////////////////////////////////////////////////////////////////////
