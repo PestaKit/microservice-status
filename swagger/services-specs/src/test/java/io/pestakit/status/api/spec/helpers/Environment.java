@@ -2,6 +2,7 @@ package io.pestakit.status.api.spec.helpers;
 
 import io.pestakit.status.ApiException;
 import io.pestakit.status.ApiResponse;
+import io.pestakit.status.api.ServiceApi;
 import io.pestakit.status.api.ServicesApi;
 import io.pestakit.status.api.dto.ServiceGet;
 import io.pestakit.status.api.dto.ServicePost;
@@ -16,6 +17,7 @@ import java.util.Properties;
 public class Environment {
 
     private ServicesApi api = new ServicesApi();
+    private ServiceApi serviceApi = new ServiceApi();
     private ApiException lastApiException;
     private ApiResponse lastApiResponse;
     private int lastStatusCode;
@@ -27,10 +29,16 @@ public class Environment {
         properties.load(this.getClass().getClassLoader().getResourceAsStream("environment.properties"));
         String url = properties.getProperty("io.pestakit.status.server.url");
         api.getApiClient().setBasePath(url);
+        serviceApi.getApiClient().setBasePath(url);
     }
 
     public ServicesApi getApi() {
         return api;
+    }
+
+    public ServiceApi getServiceApi()
+    {
+        return serviceApi;
     }
 
     public void setLastApiException(ApiException lastApiException)
