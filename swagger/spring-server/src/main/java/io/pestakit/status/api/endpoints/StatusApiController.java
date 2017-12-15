@@ -26,6 +26,7 @@ public class StatusApiController implements ServicesApi
 {
    @Autowired
    ServiceRepository serviceRepository;
+
    @Autowired
    ServicePostValidator servicePostValidator;
 
@@ -40,7 +41,7 @@ public class StatusApiController implements ServicesApi
    @Override
    public ResponseEntity<InlineResponse201> addService(@ApiParam(value = "" ,required=true ) @Valid @RequestBody ServicePost service)
    {
-      // Convert the service to a serviceEntity
+      // Convert the service to a se ServiceEntity
       ServiceEntity serviceEntity = toServiceEntity(service);
 
       // Save the service into the DB
