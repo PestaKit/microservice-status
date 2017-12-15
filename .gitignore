@@ -49,3 +49,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+swagger/full-project/.idea/
+swagger/full-project/public_key.pem
+

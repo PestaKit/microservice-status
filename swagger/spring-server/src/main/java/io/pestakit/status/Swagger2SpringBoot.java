@@ -10,7 +10,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-@ComponentScan(basePackages = { "io.pestakit.status", "io.pestakit.status" })
+//@ComponentScan(basePackages = { "io.pestakit.status", "io.pestakit.status"})
+@ComponentScan(basePackages = { "io.pestakit.users.security", "io.pestakit.status" })
 public class Swagger2SpringBoot implements CommandLineRunner {
 
     @Override
