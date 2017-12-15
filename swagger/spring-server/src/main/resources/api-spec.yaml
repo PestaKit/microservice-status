@@ -90,7 +90,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: status
+        - name: state
           in: query
           description: 'Status wanted, none specified mean all'
           required: false

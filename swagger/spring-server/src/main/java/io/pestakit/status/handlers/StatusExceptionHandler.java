@@ -1,5 +1,6 @@
 package io.pestakit.status.handlers;
 
+import io.pestakit.status.api.exceptions.NotFoundException;
 import io.pestakit.status.api.model.ErroneousField;
 import org.joda.time.DateTime;
 import org.springframework.http.HttpHeaders;

@@ -64,6 +64,11 @@ public class StatusApiController implements ServicesApi
    public ResponseEntity<ServiceGet> getOneService(@ApiParam(value = "Numeric ID of the service to get.",required=true ) @PathVariable("serviceUID") String serviceUID)
    {
       ServiceEntity serviceEntity = serviceRepository.findByUid(serviceUID);
+
+      // If the service is not found
+      if(serviceEntity == null) {
+         return new ResponseEntity<ServiceGet>((ServiceGet)null, HttpStatus.BAD_REQUEST);
+      }
       ServiceGet service = toService(serviceEntity);
 
       return new ResponseEntity<ServiceGet>(service, HttpStatus.OK);
@@ -72,26 +77,28 @@ public class StatusApiController implements ServicesApi
    /**
     * Get a list of all services available in the store
     *
-    * @param status filter by status, none specified mean all
+    * @param state filter by status, none specified mean all
     * @return a list of services and a response code
     */
    @Override
-   public ResponseEntity<List<ServiceGet>> getServices( @ApiParam(value = "Status wanted, none specified mean all", allowableValues = "UP, DOWN, MAINTENANCE") @RequestParam(value = "status", required = false) String status)
+   public ResponseEntity<List<ServiceGet>> getServices( @ApiParam(value = "Status wanted, none specified mean all", allowableValues = "UP, DOWN, MAINTENANCE") @RequestParam(value = "state", required = false) String state)
    {
       // The list of services to return to the user
       ArrayList<ServiceGet> liste = new ArrayList<>();
       Iterable<ServiceEntity> searchResult = null;
 
       // If we want a specific status
-      if (status != null)
+      if (state != null)
       {
-         status = status.toLowerCase();
-         State state = State.fromValue(status);
+         state = state.toLowerCase();
 
-         // If the enum is valid
-         if (state != null)
+         // Convert the string state received into a State
+         State stateConverted = State.fromValue(state);
+
+         // If the stateConverted is valid
+         if (stateConverted != null)
          {
-            searchResult = serviceRepository.findByState(state);
+            searchResult = serviceRepository.findByState(stateConverted);
          }
          else
          {
@@ -135,8 +142,13 @@ public class StatusApiController implements ServicesApi
    @Override
    public ResponseEntity<Void> servicesServiceUIDDelete(@ApiParam(value = "Numeric ID of the service to delete.",required=true ) @PathVariable("serviceUID") String serviceUID)
    {
-      serviceRepository.deleteByUid(serviceUID);
-      return new ResponseEntity<Void>(HttpStatus.OK);
+      long code = serviceRepository.deleteByUid(serviceUID);
+      System.out.println(code);
+      if(code == 1)
+         return new ResponseEntity<Void>(HttpStatus.OK);
+      else
+         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+
    }
 
    /**
