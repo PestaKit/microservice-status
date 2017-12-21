@@ -1,6 +1,7 @@
 package io.pestakit.status.api.endpoints;
 
 import io.pestakit.status.api.ServicesApi;
+import io.pestakit.status.api.exceptions.NotFoundException;
 import io.pestakit.status.api.model.InlineResponse201;
 import io.pestakit.status.api.model.ServiceGet;
 import io.pestakit.status.api.model.ServicePost;
@@ -42,7 +43,7 @@ public class StatusApiController implements ServicesApi
     * @return a response code
     */
    @Override
-   public ResponseEntity<InlineResponse201> addService(@ApiParam(value = "" ,required=true ) @Valid @RequestBody ServicePost service)
+   public ResponseEntity<InlineResponse201> addService(@ApiParam(value = "", required = true) @Valid @RequestBody ServicePost service)
    {
       // Convert the service to a se ServiceEntity
       ServiceEntity serviceEntity = toServiceEntity(service);
@@ -61,14 +62,17 @@ public class StatusApiController implements ServicesApi
     * @return a response code and the payload
     */
    @Override
-   public ResponseEntity<ServiceGet> getOneService(@ApiParam(value = "Numeric ID of the service to get.",required=true ) @PathVariable("serviceUID") String serviceUID)
+   public ResponseEntity<ServiceGet> getOneService(@ApiParam(value = "Numeric ID of the service to get.", required = true) @PathVariable("serviceUID") String serviceUID)
    {
       ServiceEntity serviceEntity = serviceRepository.findByUid(serviceUID);
 
       // If the service is not found
-      if(serviceEntity == null) {
-         return new ResponseEntity<ServiceGet>((ServiceGet)null, HttpStatus.BAD_REQUEST);
+      if (serviceEntity == null)
+      {
+         throw new NotFoundException(404, "Service not found");
+         // return new ResponseEntity<ServiceGet>((ServiceGet) null, HttpStatus.BAD_REQUEST);
       }
+
       ServiceGet service = toService(serviceEntity);
 
       return new ResponseEntity<ServiceGet>(service, HttpStatus.OK);
@@ -81,7 +85,7 @@ public class StatusApiController implements ServicesApi
     * @return a list of services and a response code
     */
    @Override
-   public ResponseEntity<List<ServiceGet>> getServices( @ApiParam(value = "Status wanted, none specified mean all", allowableValues = "UP, DOWN, MAINTENANCE") @RequestParam(value = "state", required = false) String state)
+   public ResponseEntity<List<ServiceGet>> getServices(@ApiParam(value = "Status wanted, none specified mean all", allowableValues = "UP, DOWN, MAINTENANCE") @RequestParam(value = "state", required = false) String state)
    {
       // The list of services to return to the user
       ArrayList<ServiceGet> liste = new ArrayList<>();
@@ -99,8 +103,7 @@ public class StatusApiController implements ServicesApi
          if (stateConverted != null)
          {
             searchResult = serviceRepository.findByState(stateConverted);
-         }
-         else
+         } else
          {
             // Throw a runtime exception to be catched in exception handler
             throw new IllegalArgumentException("Illegal status");
@@ -130,7 +133,7 @@ public class StatusApiController implements ServicesApi
     * @return
     */
    @Override
-   public ResponseEntity<Void> servicesServiceUIDPut(@ApiParam(value = "" ,required=true ) @RequestBody Object service)
+   public ResponseEntity<Void> servicesServiceUIDPut(@ApiParam(value = "", required = true) @RequestBody Object service)
    {
       return null;
    }
@@ -140,11 +143,11 @@ public class StatusApiController implements ServicesApi
     * @return
     */
    @Override
-   public ResponseEntity<Void> servicesServiceUIDDelete(@ApiParam(value = "Numeric ID of the service to delete.",required=true ) @PathVariable("serviceUID") String serviceUID)
+   public ResponseEntity<Void> servicesServiceUIDDelete(@ApiParam(value = "Numeric ID of the service to delete.", required = true) @PathVariable("serviceUID") String serviceUID)
    {
       long code = serviceRepository.deleteByUid(serviceUID);
       System.out.println(code);
-      if(code == 1)
+      if (code == 1)
          return new ResponseEntity<Void>(HttpStatus.OK);
       else
          return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
@@ -157,21 +160,20 @@ public class StatusApiController implements ServicesApi
     * @return
     */
    @Override
-   public ResponseEntity<Void> servicesServiceUIDPatch(@ApiParam(value = "Numeric ID of the service to patch.",required=true ) @PathVariable("serviceUID") String serviceUID,
-                                                       @ApiParam(value = "The new state of the service" ,required=true ) @RequestHeader(value="state", required=true) Integer state)
+   public ResponseEntity<Void> servicesServiceUIDPatch(@ApiParam(value = "Numeric ID of the service to patch.", required = true) @PathVariable("serviceUID") String serviceUID,
+                                                       @ApiParam(value = "The new state of the service", required = true) @RequestHeader(value = "state", required = true) Integer state)
    {
       return null;
    }
 
    @Override
-   public ResponseEntity<Void> deleteServices( @NotNull @ApiParam(value = "Secret passphrase to access this endpoint", required = true) @RequestParam(value = "passphrase", required = true) String passphrase)
+   public ResponseEntity<Void> deleteServices(@NotNull @ApiParam(value = "Secret passphrase to access this endpoint", required = true) @RequestParam(value = "passphrase", required = true) String passphrase)
    {
-      if(passphrase.equals(PASSPHRASE))
+      if (passphrase.equals(PASSPHRASE))
       {
          serviceRepository.deleteAll();
          return new ResponseEntity<Void>(HttpStatus.OK);
-      }
-      else
+      } else
       {
          return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
       }
@@ -223,7 +225,7 @@ public class StatusApiController implements ServicesApi
    }
 
    // Add a new validator to the service entity we get as an input
-   @InitBinder(value="servicePost")
+   @InitBinder(value = "servicePost")
    public void initBinder(WebDataBinder binder)
    {
       binder.addValidators(servicePostValidator);
