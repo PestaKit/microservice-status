@@ -149,7 +149,7 @@ public class StatusApiController implements ServicesApi
       if (code == 1)
          return new ResponseEntity<Void>(HttpStatus.OK);
       else
-         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+         return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 
    }
 
