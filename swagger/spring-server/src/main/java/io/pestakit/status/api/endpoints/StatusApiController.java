@@ -70,7 +70,6 @@ public class StatusApiController implements ServicesApi
       if (serviceEntity == null)
       {
          throw new NotFoundException(404, "Service not found");
-         // return new ResponseEntity<ServiceGet>((ServiceGet) null, HttpStatus.BAD_REQUEST);
       }
 
       ServiceGet service = toService(serviceEntity);
@@ -146,7 +145,7 @@ public class StatusApiController implements ServicesApi
    public ResponseEntity<Void> servicesServiceUIDDelete(@ApiParam(value = "Numeric ID of the service to delete.", required = true) @PathVariable("serviceUID") String serviceUID)
    {
       long code = serviceRepository.deleteByUid(serviceUID);
-      System.out.println(code);
+
       if (code == 1)
          return new ResponseEntity<Void>(HttpStatus.OK);
       else
