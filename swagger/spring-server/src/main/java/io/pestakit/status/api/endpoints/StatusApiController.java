@@ -34,7 +34,7 @@ public class StatusApiController implements ServicesApi
 
    private final String PASSPHRASE = "ca2f2315-f538-42f7-a68e-7817c9b57911";
 
-   private final String BASE_URL = "http://localhost:8080/services/";
+   private final String BASE_URL = "http://localhost:8080/api/services/";
 
    /**
     * Method used to add one/several service(s) when a post is made to the api
