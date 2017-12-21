@@ -206,6 +206,11 @@ paths:
       summary: modify a subscribed service
       description: ''
       parameters:
+        - in: path
+          name: serviceUID
+          required: true
+          description: Numeric ID of the service to put.
+          type: string
         - in: body
           name: "Service"
           required: true
