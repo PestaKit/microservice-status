@@ -20,9 +20,7 @@ public class ServicePostValidator implements Validator
       // Check des champs
       ServicePost service = (ServicePost) o;
 
-      if(service.getState() == null)
-      {
-         errors.rejectValue("state", "the state is invalid !");
-      }
+
+      // errors.rejectValue("state", "the state is invalid !");
    }
 }

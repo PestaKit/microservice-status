@@ -1,5 +1,6 @@
 package io.pestakit.status.handlers;
 
+import io.pestakit.status.api.exceptions.NotFoundException;
 import io.pestakit.status.api.model.ErroneousField;
 import org.joda.time.DateTime;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +12,7 @@ import io.pestakit.status.api.model.Error;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -44,6 +46,13 @@ public class StatusExceptionHandler extends ResponseEntityExceptionHandler
       return ResponseEntity.badRequest().body((Object) newError(ex, ex.getMessage(), DateTime.now(), erroneousFields));
    }
 
+   @ResponseStatus(value= HttpStatus.NOT_FOUND, reason = "Resource not found")
+   @ExceptionHandler(value = {NotFoundException.class})
+   protected void handlerServiceNotFound(RuntimeException ex, WebRequest request)
+   {
+      // Nothing special to do here
+   }
+
 
    /**
     * When the post content is not readable
@@ -62,6 +71,8 @@ public class StatusExceptionHandler extends ResponseEntityExceptionHandler
 
       return ResponseEntity.badRequest().body((Object) newError(ex, ex.getMessage(), DateTime.now(), erroneousFields));
    }
+
+
 
 
    /**

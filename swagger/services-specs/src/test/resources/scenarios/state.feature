@@ -1,7 +1,9 @@
 Feature: State of the services in the API
 
   Background:
-    Given there is a Services server
+    Given There is a Services server
+    Given I have a flushed database
+    Then I populate it with some services
 
   Scenario: list the services with maintenance state
     When I GET on /services?state=maintenance endpoint
