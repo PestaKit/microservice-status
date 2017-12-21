@@ -7,8 +7,11 @@ Feature: Single service put and patch
 
   Scenario: patch an existing service with a valid status
     Given I have a valid service uid
-    Given I have an valid status
+    Given I have a valid status
     When I PATCH on /services/{uid} endpoint
+    Then I receive a 200 status code
+    When I GET on /services/{uid} endpoint
+    Then The status has changed
     Then I receive a 200 status code
 
   Scenario: try to patch an existing service with an invalid status
@@ -33,6 +36,9 @@ Feature: Single service put and patch
     Given I have a valid service uid
     Given I have a service payload
     When I PUT on /services/{uid} endpoint
+    Then I receive a 200 status code
+    When I GET on /services/{uid} endpoint
+    Then The service has changed
     Then I receive a 200 status code
 
   Scenario: try to put an existing service with an invalid update
