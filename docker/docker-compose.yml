@@ -1,6 +1,6 @@
 version: '2'
 services:
-  mysql:
+  database:
     build: mysql/
     environment:
      - MYSQL_ROOT_PASSWORD=adminpw
@@ -13,4 +13,10 @@ services:
     ports:
      - "6060:80"
     links:
-     - mysql:db
+     - database:db
+  springboot:
+    build: microservice-status
+    ports:
+     - "8080:8080"
+    environment:
+     - SPRING_DATASOURCE_URL=jdbc:mysql://database/status
