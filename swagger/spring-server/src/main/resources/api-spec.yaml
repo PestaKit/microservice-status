@@ -173,8 +173,6 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/ServiceGet'
-        '400':
-          description: Invalid ID
         '404':
           description: Service not found
     patch:
@@ -196,8 +194,6 @@ paths:
       responses:
         '200':
           description: OK
-        '400':
-          description: Invalid ID
         '403':
           description: Service not found
 
@@ -217,8 +213,6 @@ paths:
       responses:
         '200':
           description: OK
-        '400':
-          description: Invalid ID
         '403':
           description: Forbidden
         '404':
@@ -238,7 +232,5 @@ paths:
       responses:
         '200':
           description: OK
-        '400':
-          description: Invalid ID
         '404':
           description: Service not found
