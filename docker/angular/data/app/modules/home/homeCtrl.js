@@ -30,6 +30,7 @@
 		vm.version = "1.0.0";
 		vm.lastUpdated = 0;
 		vm.daysSinceLastIncident = "-";
+		vm.accumulator = 0;
 	/*	vm.services = [
 			{
 				"self":"https://docs.angularjs.org/api/ng/directive/ngRepeat",
@@ -73,16 +74,12 @@
 		// First call to display data before interval kicks in
 		updateData();
 
-		// Update the page with the latest info every "updateDataFrequency" ms
-		$interval(updateData, vm.updateDataFrequency);
-
-		// Update the page timer until reset when new data are fetched
+		// Update the page and refresh the information if needed
 		$interval(() => {
-				vm.lastUpdated = vm.lastUpdated + (vm.updateTimerFrequency / 1000) < (vm.updateDataFrequency / 1000) ? vm.lastUpdated + (vm.updateTimerFrequency / 1000) : vm.lastUpdated = 0;
-				console.log(vm.lastUpdated);
-			}, vm.updateTimerFrequency);
+			vm.lastUpdated += 1;
+			if(vm.lastUpdated >= vm.updateDataFrequency / 1000) {
+				updateData();
+			}
+		}, vm.updateTimerFrequency);
 	}
-
-
-
 })();
