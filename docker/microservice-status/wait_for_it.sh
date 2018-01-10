@@ -22,6 +22,7 @@ USAGE
     exit 1
 }
 
+
 wait_for()
 {
     if [[ $TIMEOUT -gt 0 ]]; then
