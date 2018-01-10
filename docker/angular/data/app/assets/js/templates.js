@@ -26,7 +26,10 @@ angular.module('state-manager').run(['$templateCache', function($templateCache) 
     "							All services up and running\n" +
     "						</div>\n" +
     "						<div ng-switch-when=\"all_error\">\n" +
-    "							Some services are down or under maintenance\n" +
+    "							Some services are down or under maintenance !\n" +
+    "						</div>\n" +
+    "						<div ng-switch-when=\"all_error_api\">\n" +
+    "							The services api is not reachable !\n" +
     "						</div>\n" +
     "					</div>\n" +
     "				</div>\n" +

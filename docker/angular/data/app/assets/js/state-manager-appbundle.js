@@ -253,7 +253,7 @@ angular.module('state-manager')
 				console.log("Data fetched");
 				vm.lastUpdated = 0;
 			}, function(error) {
-				vm.statusAll = "all_error";
+				vm.statusAll = "all_error_api";
 				vm.activeMaintenances = 0;
 				vm.downService = 0;
 			});
