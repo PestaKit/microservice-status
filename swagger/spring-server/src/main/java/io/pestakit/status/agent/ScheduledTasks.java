@@ -1,6 +1,5 @@
 package io.pestakit.status.agent;
 
-import io.pestakit.status.api.ServicesApi;
 import io.pestakit.status.api.model.State;
 import io.pestakit.status.entities.ServiceEntity;
 import io.pestakit.status.repositories.ServiceRepository;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.List;
 
 @Component
 public class ScheduledTasks
