@@ -22,6 +22,8 @@ public class Swagger2SpringBoot implements CommandLineRunner {
 
     public static void main(String[] args) throws Exception {
         new SpringApplication(Swagger2SpringBoot.class).run(args);
+
+        // Creer thread ici ? Agent scheduled task swagger
     }
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {
