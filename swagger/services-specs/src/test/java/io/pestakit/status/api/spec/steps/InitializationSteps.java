@@ -53,6 +53,7 @@ public class InitializationSteps
          ServicePost service = new ServicePost();
          service.setName("Service " + i);
          service.setStatusAddress("127.0.0." + i);
+         service.setStatusPort(80 + i);
          service.setState(State.values()[i % State.values().length]);
          service.setContact("Initialization Steps");
          service.setDescription("Populating service no." + i);

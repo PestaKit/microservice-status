@@ -14,12 +14,6 @@ Feature: Single service put and patch
     Then The status has changed
     Then I receive a 200 status code
 
-  Scenario: try to patch an existing service with an invalid status
-    Given I have a valid service uid
-    Given I have an invalid status
-    When I PATCH on /services/{uid} endpoint
-    Then I receive a 400 status code
-
   Scenario: try to patch a missing service with a valid status
     Given I have an invalid service uid
     Given I have a valid status
