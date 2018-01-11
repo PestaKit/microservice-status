@@ -216,6 +216,7 @@ public class StatusApiController implements ServicesApi
       ServiceEntity entity = new ServiceEntity();
 
       entity.setStatusAddress(service.getStatusAddress());
+      entity.setStatusPort(service.getStatusPort());
       entity.setState(service.getState());
       entity.setName(service.getName());
       entity.setDescription(service.getDescription());
@@ -242,6 +243,7 @@ public class StatusApiController implements ServicesApi
       service.setName(serviceEntity.getName());
       service.setState(serviceEntity.getState());
       service.setStatusAddress(serviceEntity.getStatusAddress());
+      service.setStatusPort(serviceEntity.getStatusPort());
 
       return service;
    }

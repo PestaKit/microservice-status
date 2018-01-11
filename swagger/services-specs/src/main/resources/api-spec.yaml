@@ -23,13 +23,14 @@ definitions:
     type: object
     required:
       - name
-      - statusAddress
       - state
     properties:
       name:
         type: string
       statusAddress:
         type: string
+      statusPort:
+        type: integer
       description:
         type: string
       state:
@@ -46,6 +47,8 @@ definitions:
         type: string
       statusAddress:
         type: string
+      statusPort:
+        type: integer
       description:
         type: string
       state:
@@ -235,3 +238,8 @@ paths:
           type: string
           required: true
           description: Numeric ID of the service to delete.
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Service not found

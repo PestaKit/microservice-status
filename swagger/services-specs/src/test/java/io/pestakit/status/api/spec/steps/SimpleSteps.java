@@ -38,6 +38,7 @@ public class SimpleSteps
       ServicePost service = new ServicePost();
       service.setName("Simple test");
       service.setStatusAddress("10.10.10.1");
+      service.setStatusPort(80);
       service.setState(State.UP);
       service.setContact("Simple Steps");
       service.setDescription("Service posted for simple test");
