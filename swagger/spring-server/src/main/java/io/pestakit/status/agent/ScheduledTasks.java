@@ -17,7 +17,7 @@ public class ScheduledTasks
    ServiceRepository serviceRepository;
 
    // Interval in ms
-   private final int CHECK_INTERVAL = 5 * 1000;
+   private final int CHECK_INTERVAL = 20 * 1000;
    private Iterable<ServiceEntity> services = null;
 
    /**
