@@ -23,13 +23,14 @@ definitions:
     type: object
     required:
       - name
-      - statusAddress
       - state
     properties:
       name:
         type: string
       statusAddress:
         type: string
+      statusPort:
+        type: integer
       description:
         type: string
       state:
@@ -46,6 +47,8 @@ definitions:
         type: string
       statusAddress:
         type: string
+      statusPort:
+        type: integer
       description:
         type: string
       state:

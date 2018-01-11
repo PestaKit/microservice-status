@@ -21,6 +21,7 @@ public class ServiceEntity implements Serializable
 
    private String name;
    private String statusAddress;
+   private int statusPort;
    private String description;
    private State state;
    private String contact;
@@ -53,6 +54,16 @@ public class ServiceEntity implements Serializable
    public void setStatusAddress(String statusAddress)
    {
       this.statusAddress = statusAddress;
+   }
+
+   public int getStatusPort()
+   {
+      return statusPort;
+   }
+
+   public void setStatusPort(int statusPort)
+   {
+      this.statusPort = statusPort;
    }
 
    public String getDescription()
