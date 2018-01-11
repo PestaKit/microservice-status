@@ -26,6 +26,22 @@ public class ServiceEntity implements Serializable
    private State state;
    private String contact;
 
+   public ServiceEntity()
+   {
+
+   }
+
+   public ServiceEntity(ServiceEntity service)
+   {
+      this.uid = service.getUid();
+      this.name = service.getName();
+      this.statusAddress = service.getStatusAddress();
+      this.statusPort = service.getStatusPort();
+      this.description = service.getDescription();
+      this.state = service.getState();
+      this.contact = service.getContact();
+   }
+
    public String getUid()
    {
       return uid;
