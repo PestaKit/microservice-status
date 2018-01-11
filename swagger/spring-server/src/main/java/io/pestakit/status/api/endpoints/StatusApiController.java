@@ -133,10 +133,13 @@ public class StatusApiController implements ServicesApi
     */
    @Override
    public ResponseEntity<Void> servicesServiceUIDPut(@ApiParam(value = "Numeric ID of the service to put.",required=true ) @PathVariable("serviceUID") String serviceUID,
-                                                     @ApiParam(value = "" ,required=true ) @RequestBody ServicePost service)
+                                                     @ApiParam(value = "" ,required=true ) @Valid @RequestBody ServicePost service)
    {
       // Delete the old service
-      serviceRepository.deleteByUid(serviceUID);
+      long code = serviceRepository.deleteByUid(serviceUID);
+
+      if (code != 1)
+         return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 
       // Create the updated service
       ServiceEntity serviceEntity = toServiceEntity(service);

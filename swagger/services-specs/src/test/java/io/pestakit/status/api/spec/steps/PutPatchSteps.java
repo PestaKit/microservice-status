@@ -9,11 +9,9 @@ import io.pestakit.status.api.ServiceApi;
 import io.pestakit.status.api.dto.State;
 import io.pestakit.status.api.spec.helpers.Environment;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.Socket;
 import java.net.URL;
 
 import static org.junit.Assert.assertTrue;
@@ -23,7 +21,8 @@ public class PutPatchSteps
    private Environment environment;
    private ServiceApi api;
 
-   private State state;
+   private String state;
+   private String length;
 
    public PutPatchSteps(Environment environment)
    {
@@ -34,61 +33,72 @@ public class PutPatchSteps
    @Given("^I have a valid status$")
    public void i_have_a_valid_status() throws Throwable
    {
-      state = State.DOWN;
+      state = "\"up\"";
+      length = "4";
    }
 
    @Given("^I have an invalid status$")
    public void i_have_an_invalid_status() throws Throwable
    {
-      state = null;
+      state = "\"toto\"";
+      length = "6";
    }
 
    @When("^I PATCH on /services/\\{uid} endpoint$")
    public void i_PATCH_on_services_uid_endpoint() throws Throwable
    {
-      try
-      {
-         ApiResponse lastApiResponse = api.servicesServiceUIDPatchWithHttpInfo(environment.getCurrent_uid(), state);
+      // We don't use API to allow a PATCH with an invalid value and HttpUrlConnection doesn't allow patch
 
-         environment.setLastApiResponse(lastApiResponse);
-         environment.setLastApiException(null);
-         environment.setLastStatusCode(lastApiResponse.getStatusCode());
-      }
-      catch (ApiException e)
-      {
-         environment.setLastApiResponse(null);
-         environment.setLastApiException(e);
-         environment.setLastStatusCode(e.getCode());
-      }
-
-      /*
-      HttpURLConnection connection = null;
+      Socket httpSocket = null;
+      DataOutputStream os = null;
+      BufferedReader is = null;
 
       try
       {
-         //Create connection
-         URL url = new URL("http://localhost:8080/api/services/" + environment.getCurrent_uid());
-         connection = (HttpURLConnection) url.openConnection();
-         connection.setRequestMethod("PATCH");
-         connection.setRequestProperty("Accept", "");
-
-         connection.setUseCaches(false);
-         connection.setDoOutput(true);
-
-         //Send request
-         DataOutputStream wr = new DataOutputStream(
-            connection.getOutputStream());
-         wr.writeBytes(state);
-         wr.close();
-
-         //Get Response
-         environment.setLastStatusCode(connection.getResponseCode());
+         httpSocket = new Socket("127.0.0.1", 8080);
+         os = new DataOutputStream(httpSocket.getOutputStream());
+         is = new BufferedReader(new InputStreamReader(httpSocket.getInputStream()));
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         System.out.println(e.getMessage());
+         assertTrue(false);
       }
-      */
+
+      System.out.println("Socket opened");
+
+      if (httpSocket != null && os != null && is != null)
+      {
+         try
+         {
+            os.writeBytes("PATCH /api/services/" + environment.getCurrent_uid() + " HTTP/1.1\n");
+            os.writeBytes("Host: localhost:8080\n");
+            os.writeBytes("User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0");
+            os.writeBytes("Accept: */*\n");
+            os.writeBytes("Accept-Language: en-US,en;q=0.5\n");
+            os.writeBytes("Accept-Encoding: gzip, deflate\n");
+            os.writeBytes("Referer: http://localhost:8080/api/swagger-ui.html\n");
+            os.writeBytes("Content-Type: application/json\n");
+            os.writeBytes("Content-Length: " + length + "\n");
+            os.writeBytes("Connection: keep-alive\n");
+            os.writeBytes("\n");
+            os.writeBytes(state);
+            os.flush();
+
+            String responseLine = is.readLine();
+            int responseCode = Integer.parseInt(responseLine.substring(responseLine.length() - 4, responseLine.length() - 1));
+
+            os.close();
+            is.close();
+            httpSocket.close();
+
+            environment.setLastStatusCode(responseCode);
+         }
+         catch (Exception e)
+         {
+            assertTrue(false);
+         }
+      }
    }
 
    @When("^I PUT on /services/\\{uid} endpoint$")
@@ -113,7 +123,7 @@ public class PutPatchSteps
    @Then("^The status has changed$")
    public void the_status_has_changed() throws Throwable
    {
-      assertTrue(environment.getRecuperatedServices().get(0).getState().toString().equals(state.toString()));
+      assertTrue(("\"" + environment.getRecuperatedServices().get(0).getState().toString() + "\"").equals(state));
    }
 
    @Then("^The service has changed$")
