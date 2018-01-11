@@ -18,8 +18,6 @@ public class SingleServiceSteps
    private Environment environment;
    private ServiceApi api;
 
-   private String uid;
-
    public SingleServiceSteps(Environment environment)
    {
       this.environment = environment;
@@ -29,13 +27,13 @@ public class SingleServiceSteps
    @Given("^I have a valid service uid$")
    public void i_have_a_valid_service_uid() throws Throwable
    {
-      uid = getUidFromSelf(environment.getApi().getServicesWithHttpInfo(null).getData().get(0).getSelf());
+      environment.setCurrent_uid(getUidFromSelf(environment.getApi().getServicesWithHttpInfo(null).getData().get(0).getSelf()));
    }
 
    @Given("^I have an invalid service uid$")
    public void i_have_an_invalid_service_uid() throws Throwable
    {
-      uid = "42";
+      environment.setCurrent_uid("42");
    }
 
    @When("^I GET on /services/\\{uid} endpoint$")
@@ -43,7 +41,7 @@ public class SingleServiceSteps
    {
       try
       {
-         ApiResponse lastApiResponse = api.getOneServiceWithHttpInfo(uid);
+         ApiResponse lastApiResponse = api.getOneServiceWithHttpInfo(environment.getCurrent_uid());
 
          environment.setLastApiResponse(lastApiResponse);
          environment.setLastApiException(null);
@@ -64,7 +62,7 @@ public class SingleServiceSteps
    {
       try
       {
-         ApiResponse lastApiResponse = api.servicesServiceUIDDeleteWithHttpInfo(uid);
+         ApiResponse lastApiResponse = api.servicesServiceUIDDeleteWithHttpInfo(environment.getCurrent_uid());
 
          environment.setLastApiResponse(lastApiResponse);
          environment.setLastApiException(null);
@@ -81,7 +79,7 @@ public class SingleServiceSteps
    @Then("^I receive a services with the correct uid$")
    public void i_receive_a_services_with_the_correct_uid() throws Throwable
    {
-      assertEquals(uid, getUidFromSelf(environment.getRecuperatedServices().get(0).getSelf()));
+      assertEquals(environment.getCurrent_uid(), getUidFromSelf(environment.getRecuperatedServices().get(0).getSelf()));
    }
 
    private String getUidFromSelf(String self)

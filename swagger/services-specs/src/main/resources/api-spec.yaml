@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: 0.2.1
+  version: 0.2.2
   title: Status API
   description: An API used to monitor status of various subscribed services
 host: 'localhost:8080'
@@ -186,15 +186,18 @@ paths:
           required: true
           description: Numeric ID of the service to patch.
           type: string
-        - in: header
+        - in: body
           name: state
-          type: integer
+          schema:
+            $ref: '#/definitions/State'
           required: true
           description: The new state of the service
       responses:
         '200':
           description: OK
-        '403':
+        '400':
+          description: Bad request
+        '404':
           description: Service not found
 
     put:
@@ -203,18 +206,21 @@ paths:
       summary: modify a subscribed service
       description: ''
       parameters:
+        - in: path
+          name: serviceUID
+          required: true
+          description: Numeric ID of the service to put.
+          type: string
         - in: body
-          name: Service
+          name: "Service"
           required: true
           schema:
-            type: object
-            items:
-              $ref: '#/definitions/ServicePost'
+            $ref: '#/definitions/ServicePost'
       responses:
         '200':
           description: OK
-        '403':
-          description: Forbidden
+        '400':
+          description: Bad request
         '404':
           description: Service not found
 
@@ -229,8 +235,3 @@ paths:
           type: string
           required: true
           description: Numeric ID of the service to delete.
-      responses:
-        '200':
-          description: OK
-        '404':
-          description: Service not found

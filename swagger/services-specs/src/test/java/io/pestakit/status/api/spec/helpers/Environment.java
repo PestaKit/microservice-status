@@ -23,6 +23,7 @@ public class Environment {
     private int lastStatusCode;
     private ServicePost toPostService;
     private List<ServiceGet> recuperatedServices;
+    private String current_uid;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
@@ -79,5 +80,15 @@ public class Environment {
     public void setRecuperatedServices(List<ServiceGet> recuperatedServices)
     {
         this.recuperatedServices = recuperatedServices;
+    }
+
+    public String getCurrent_uid()
+    {
+        return current_uid;
+    }
+
+    public void setCurrent_uid(String current_uid)
+    {
+        this.current_uid = current_uid;
     }
 }

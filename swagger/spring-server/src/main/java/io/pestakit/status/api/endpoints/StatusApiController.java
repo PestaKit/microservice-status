@@ -34,7 +34,7 @@ public class StatusApiController implements ServicesApi
 
    private final String PASSPHRASE = "ca2f2315-f538-42f7-a68e-7817c9b57911";
 
-   private final String BASE_URL = "http://localhost:8080/services/";
+   private final String BASE_URL = "http://localhost:8080/api/services/";
 
    /**
     * Method used to add one/several service(s) when a post is made to the api
@@ -132,9 +132,20 @@ public class StatusApiController implements ServicesApi
     * @return
     */
    @Override
-   public ResponseEntity<Void> servicesServiceUIDPut(@ApiParam(value = "", required = true) @RequestBody Object service)
+   public ResponseEntity<Void> servicesServiceUIDPut(@ApiParam(value = "Numeric ID of the service to put.",required=true ) @PathVariable("serviceUID") String serviceUID,
+                                                     @ApiParam(value = "" ,required=true ) @RequestBody ServicePost service)
    {
-      return null;
+      // Delete the old service
+      serviceRepository.deleteByUid(serviceUID);
+
+      // Create the updated service
+      ServiceEntity serviceEntity = toServiceEntity(service);
+      serviceEntity.setUid(serviceUID);
+
+      // Save the updated service
+      serviceRepository.save(serviceEntity);
+
+      return new ResponseEntity<Void>(HttpStatus.OK);
    }
 
    /**
@@ -159,10 +170,22 @@ public class StatusApiController implements ServicesApi
     * @return
     */
    @Override
-   public ResponseEntity<Void> servicesServiceUIDPatch(@ApiParam(value = "Numeric ID of the service to patch.", required = true) @PathVariable("serviceUID") String serviceUID,
-                                                       @ApiParam(value = "The new state of the service", required = true) @RequestHeader(value = "state", required = true) Integer state)
+   public ResponseEntity<Void> servicesServiceUIDPatch(@ApiParam(value = "Numeric ID of the service to patch.",required=true ) @PathVariable("serviceUID") String serviceUID,
+                                                       @ApiParam(value = "The new state of the service" ,required=true ) @RequestBody State state)
    {
-      return null;
+      ServiceEntity serviceEntity = serviceRepository.findByUid(serviceUID);
+
+      if(serviceEntity != null) {
+         serviceEntity.setState(state);
+
+         serviceRepository.save(serviceEntity);
+
+         return new ResponseEntity<Void>(HttpStatus.OK);
+      }
+      else
+      {
+         throw new NotFoundException(404, "Service not found");
+      }
    }
 
    @Override

@@ -46,7 +46,7 @@ public class StatusExceptionHandler extends ResponseEntityExceptionHandler
       return ResponseEntity.badRequest().body((Object) newError(ex, ex.getMessage(), DateTime.now(), erroneousFields));
    }
 
-   @ResponseStatus(value= HttpStatus.NOT_FOUND, reason = "Resource not found")
+   @ResponseStatus(value= HttpStatus.NOT_FOUND, reason = "Service not found")
    @ExceptionHandler(value = {NotFoundException.class})
    protected void handlerServiceNotFound(RuntimeException ex, WebRequest request)
    {

@@ -14,6 +14,7 @@ public interface ServiceRepository extends CrudRepository<ServiceEntity, Long>{
 
    public List<ServiceEntity> findByState(State state);
 
+   @Transactional
    public ServiceEntity findByUid(String uid);
 
    @Transactional

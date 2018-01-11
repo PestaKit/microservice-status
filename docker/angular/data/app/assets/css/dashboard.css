@@ -1,0 +1,144 @@
+#status_top_box {
+	width: 80%;
+	margin: auto;
+	height: 20px;
+	background-color: #27AE60;
+	padding: 15px;
+	border-radius: 5px;
+}
+
+.all_good {
+	width: 80%;
+	margin: auto;
+	height: 20px;
+	background-color: #27AE60;
+	padding: 15px;
+	border-radius: 5px;
+}
+
+.all_error {
+	width: 80%;
+	margin: auto;
+	height: 20px;
+	background-color: #ae0100;
+	padding: 15px;
+	border-radius: 5px;
+}
+
+.all_error_api {
+	width: 80%;
+	margin: auto;
+	height: 20px;
+	background-color: #ae0100;
+	padding: 15px;
+	border-radius: 5px;
+}
+
+h1, h3 {
+	color: #D8D9D9;
+}
+
+#status {
+	float: left;
+	font-weight: bold;
+	display: inline;
+	color: white;
+}
+
+#last_updated {
+	font-weight: normal;
+	color: white;
+	display: inline;
+	float: right;
+}
+
+#overview {
+	margin: 30px auto 30px;
+	width: 80%;
+	padding: 15px;
+	border-radius: 5px;
+	border: 1px solid #414142;
+}
+
+.big {
+	font-size: 80px;
+	color: #D8D9D9;
+	text-align: center;
+}
+
+
+.label {
+	font-size: 12px;
+	color: #D8D9D9;
+	text-align: center;
+}
+
+#active_incidents {
+	width: 30%;
+	display: inline-block;
+	float: left;
+
+}
+#active_maintenance {
+	width: 30%;
+	display: inline-block;
+
+}
+#days_since_last_incident {
+	width: 30%;
+	display: inline-block;
+	float: right;
+}
+
+
+.service {
+	width: 80%;
+	height: auto;
+	padding: 15px;
+	margin: 10px auto;
+	border-radius: 5px;
+	border: 1px solid #414142;
+}
+
+.sub_service {
+	width: 100%;
+	min-height: 35px;
+}
+
+
+md-card {
+	background-color: #2B2B2B;
+}
+
+.service_name {
+	color: #D8D9D9;
+	float: left;
+	font-weight: bold;
+	display: inline-block;
+	font-size: 20px;
+}
+
+.service_info {
+	display: block;
+	color: #D8D9D9;
+	text-align: left;
+	margin-left: 20px;
+}
+
+.up {
+	color: #27AE60;
+	float: right;
+	font-weight: bold;
+}
+
+.maintenance {
+	color: orange;
+	float: right;
+	font-weight: bold;
+}
+
+.down {
+	color: red;
+	float: right;
+	font-weight: bold;
+}
