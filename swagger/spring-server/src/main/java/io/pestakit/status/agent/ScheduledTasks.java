@@ -52,8 +52,9 @@ public class ScheduledTasks
    {
       boolean address = !serviceEntity.getStatusAddress().equals("") && serviceEntity.getStatusAddress() != null;
       boolean port = serviceEntity.getStatusPort() != null;
+      boolean isNotMaintenance = !(serviceEntity.getState() == State.MAINTENANCE);
 
-      return port && address;
+      return port && address && isNotMaintenance;
    }
 
    private boolean isAlive(ServiceEntity service)
