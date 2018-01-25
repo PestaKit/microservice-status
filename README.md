@@ -1,3 +1,4 @@
+# Microservice-status
 ## Introduction
 This API has been made during the course of *Multi-Tier Application* of the HEIG-VD. This API allows to keep a track of the condition of services. The user can manually change the state of a service or can provide the address of the service to have it checked periodically.
 ## Starting the application
@@ -55,7 +56,7 @@ Update the status of the service. It require a parameter **_state_** with a valu
 Update a service. Allow to modify an existing service with its *UID*. The structure of the JSON object is the same as seen above.
 ### /services
 #### DELETE
-Delete all services in the application. Require a passphrase set in the code to be executed.
+Delete all services in the application. Require a passphrase set in the code to be executed. *For tests purpose only*.
 #### GET
 Get a list of all the services, with the possibility to filter services by their *state*.
 #### POST
