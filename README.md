@@ -79,7 +79,7 @@ Add a new service, respecting the structure of a service.
 * If you are interested in the implementation, go through the code ! Here are the differents purposes of the folders in this repository :
 
 ```
-docker 					-> folder used for the deployement, it contains the docker images and their data
+docker 			-> folder used for the deployement, it contains the docker images and their data
 swagger/services-specs 	-> folder containg all the code used for the cucumber tests
 swagger/spring-server 	-> all the code of the server itself
 swagger/full-project 	-> project to include in IntelliJ IDEA if you to have both modules (tests and server) aside
