@@ -55,8 +55,6 @@ public class ScheduledTasks
 
    private boolean isAlive(ServiceEntity service)
    {
-      System.out.println("Checking service " + service.getName());
-
       try (Socket s = new Socket(service.getStatusAddress(), service.getStatusPort())) {
          return true;
       } catch (IOException ex) {
@@ -66,8 +64,6 @@ public class ScheduledTasks
    }
 
    private void updateService(ServiceEntity oldService, boolean alive) {
-
-      System.out.println("Updating service " + oldService.getName());
 
       // Create an updated service
       ServiceEntity updatedService = new ServiceEntity(oldService);
