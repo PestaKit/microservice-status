@@ -72,7 +72,8 @@ Add a new service, respecting the structure of a service.
 
 * The angular front-end is based on another project developped during the course *Web technonlogies* at HEIG-VD. You can find the concerned project and more details on its implementation in this repository : [https://github.com/Naewy/TWEB-project_03-angular_interface](https://github.com/Naewy/TWEB-project_03-angular_interface)
 
-## Contributors and creators of this beautiful API
+
+## Creators of this API
 
 * Alain Hardy : [https://github.com/AlainHardy](https://github.com/AlainHardy)
 * Matthieu Chatelan : [https://github.com/Newtt](https://github.com/Newtt)
