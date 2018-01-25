@@ -7,9 +7,8 @@ Once you have the wanted jar, go to */docker* folder and run command `docker-com
 - **MySQL** : localhost:3306
 - **phpMyAdmin** : [http://localhost:6060](http://localhost:6060)
 - **angularJS front-end** : [http://localhost:4444](http://localhost:4444)
-- **Springboot Server** : [http://localhost:8080](http://localhost:8080)
+- **Springboot Server** : [http://localhost:8080](http://localhost:8080) 
 
-<br/>
 ### Add your first service
 Open your browser and access to [http://localhost:8080/api](http://localhost:8080/api).
 Click on *services* to open the endpoints of */services*, then on the **Post** method. <br/>
@@ -82,7 +81,8 @@ Add a new service, respecting the structure of a service.
 docker 			-> folder used for the deployement, it contains the docker images and their data
 swagger/services-specs 	-> folder containg all the code used for the cucumber tests
 swagger/spring-server 	-> all the code of the server itself
-swagger/full-project 	-> project to include in IntelliJ IDEA if you to have both modules (tests and server) aside
+swagger/full-project 	-> project to include in IntelliJ IDEA if you want to have both modules (tests and server) aside
+
 ```
 
 
