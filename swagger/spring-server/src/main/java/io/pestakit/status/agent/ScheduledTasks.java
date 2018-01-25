@@ -26,8 +26,6 @@ public class ScheduledTasks
    @Scheduled(fixedRate = CHECK_INTERVAL)
    public void checkServicesStatus()
    {
-      System.out.println("Starting service check...");
-
       // Retrieve all services
       services = serviceRepository.findAll();
 
@@ -44,8 +42,6 @@ public class ScheduledTasks
             updateService(service, alive);
          }
       }
-
-      System.out.println("End of the services check");
    }
 
    private boolean isCheckable(ServiceEntity serviceEntity)
