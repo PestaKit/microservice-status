@@ -8,10 +8,14 @@ Once you have the wanted jar, go to */docker* folder and run command `docker-com
 - **phpMyAdmin** : [http://localhost:6060](http://localhost:6060)
 - **angularJS front-end** : [http://localhost:4444](http://localhost:4444)
 - **Springboot Server** : [http://localhost:8080](http://localhost:8080)
+
+<br/>
 ### Add your first service
 Open your browser and access to [http://localhost:8080/api](http://localhost:8080/api).
 Click on *services* to open the endpoints of */services*, then on the **Post** method. <br/>
+
 ![Post section](images/post.png)<br/>
+
 Click on the JSON structure, under *Example Value*. This will copy the structure of the *service* as a JSON object for you to edit. <br/>
 A *service* is represented by the following values :
 ```json
@@ -70,7 +74,16 @@ Add a new service, respecting the structure of a service.
 
 * The docker-compose procedure used for deploying this architecture contain a script which is managing the launch order of the containers. This script is named `/docker/microservice-status/wait_for_it.sh`and it's an open tool available on GitHub : [https://github.com/vishnubob/wait-for-it](https://github.com/vishnubob/wait-for-it), if you want more details about its utilization you can read the official [docker documentation](https://docs.docker.com/compose/startup-order/).
 
-* The angular front-end is based on another project developped during the course *Web technonlogies* at HEIG-VD. You can find the concerned project and more details on its implementation in this repository : [https://github.com/Naewy/TWEB-project_03-angular_interface](https://github.com/Naewy/TWEB-project_03-angular_interface)
+* The angular front-end is based on another project developped during the course *Web technonlogies* at HEIG-VD. You can find the concerned project and more details on its implementation in this repository : [https://github.com/Naewy/TWEB-project_03-angular_interface](https://github.com/Naewy/TWEB-project_03-angular_interface).
+
+* If you are interested in the implementation, go through the code ! Here are the differents purposes of the folders in this repository :
+
+```
+docker 					-> folder used for the deployement, it contains the docker images and their data
+swagger/services-specs 	-> folder containg all the code used for the cucumber tests
+swagger/spring-server 	-> all the code of the server itself
+swagger/full-project 	-> project to include in IntelliJ IDEA if you to have both modules (tests and server) aside
+```
 
 
 ## Creators of this API
