@@ -51,7 +51,7 @@ Delete a single service with its *UID*.
 #### GET
 Get a service from its *UID*.  An object with the structure of a service seen above while be return. The object include the **_self_** value that is a link in the API to access the object.
 #### PATCH
-Update the status of the service. It require a parameter **_state_** with a value of **_up_**, **_down_** or **_maintenance_**.
+Update the status of the service. It require a parameter **_state_** with a value of **_"up"_**, **_"down"_** or **_"maintenance"_**.
 #### PUT
 Update a service. Allow to modify an existing service with its *UID*. The structure of the JSON object is the same as seen above.
 ### /services
