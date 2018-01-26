@@ -82,7 +82,6 @@ docker 			-> folder used for the deployement, it contains the docker images and 
 swagger/services-specs 	-> folder containg all the code used for the cucumber tests
 swagger/spring-server 	-> all the code of the server itself
 swagger/full-project 	-> project to include in IntelliJ IDEA if you want to have both modules (tests and server) aside
-
 ```
 
 
